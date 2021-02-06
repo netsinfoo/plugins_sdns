@@ -126,8 +126,10 @@ class Cts(models.Model):
     content  = models.CharField(max_length=30)
 
 
-    def get_absolute_url(self):
-        return reverse("cts_update", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("cts_update", kwargs={"pk": self.pk})
+    class Meta:
+        constraints = [ models.UniqueConstraint(fields=['registro', 'reg', 'content'], name='unique_Cts')]
 
     def __str__(self):
         return self.content
