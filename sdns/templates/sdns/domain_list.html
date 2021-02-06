@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load buttons %}
+
+{% block content %}
+<div class="pull-right noprint">
+    {% add_button 'plugins:sdns:domain_add' %}
+</div>
+<h1>{% block title %}Domínios{% endblock %}</h1>
+<div class="row">
+	<div class="col-md-9">
+        {% include 'utilities/obj_table.html' with bulk_delete_url='plugins:sdns:domain_bulk_delete' %}
+    </div>
+	<div class="col-md-3 noprint">
+		{% include 'inc/search_panel.html' %}
+	</div>
+</div>
+{% endblock %}
+{% comment %} {% extends 'base.html' %}
+{% load buttons %}
+
+{% block content %}
+<div class="pull-right noprint">
+    {% add_button 'plugins:sdns:register_add' %}
+</div>
+<h1>{% block title %}Dominios{% endblock %}</h1>
+<div class="row">
+	<div class="col-md-9">
+        {% include 'generic/object_table.html' with bulk_delete_url='plugins:sdns:domain_bulk_delete' %}
+    </div>
+	<div class="col-md-3 noprint">
+		{% include 'inc/search_panel.html' %}
+	</div>
+</div>
+{% endblock %} {% endcomment %}
