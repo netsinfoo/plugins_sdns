@@ -1,0 +1,2 @@
+recursive-include sdns *
+recursive-include docs *
