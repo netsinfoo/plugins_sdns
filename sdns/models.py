@@ -21,7 +21,7 @@ class Resp(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("resp_update", kwargs={"pk": self.pk})
+        return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
 
 class Domain(models.Model):
 

@@ -107,20 +107,12 @@ class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     table = RespTable
     action_buttons = ('export')
 
-class RespEditView(PermissionRequiredMixin, generic.ObjectEditView):
+class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_resp'
-    model = Resp
     queryset = Resp.objects.all()
     model_form =  RespForm
-    template_name = 'sdns/resp_edit.html'
     default_return_url = 'plugins:sdns:resp_list'
-
-class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_resp'
-    queryset = Resp.objects.filter()
-    table = RespTable
-    default_return_url = 'plugins:sdns:resp_list'
-
+        
 class RespView(View):
     """Single virtual circuits view, identified by ID."""
 
@@ -134,13 +126,25 @@ class RespView(View):
             'vlans': vlans,
         })
 
-# class RespEditView(RespCreateView):
-#     permission_required = 'sdns.change_sdns'
+class RespEditView(RespCreateView):
+    permission_required = 'sdns.change_sdns'
 
 class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_resp'
-    model = Resp
+    queryset = Resp.objects.all()
     default_return_url = 'plugins:sdns:resp_list'
+
+#
+#                   ======BULK VIEWS=======
+#    
+
+class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_resp'
+    queryset = Resp.objects.filter()
+    table = RespTable
+    form = RespForm
+    # default_return_url = 'plugins:sdns:resp_list'
+
 
 # ===========================Ns==========================================
 
