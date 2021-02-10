@@ -20,8 +20,8 @@ class Resp(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
 
 class Domain(models.Model):
 

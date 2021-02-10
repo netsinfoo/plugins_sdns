@@ -18,7 +18,7 @@ urlpatterns = [
    path('domain/<int:pk>/delete/', views.DomainDeleteView.as_view(), name='domain_delete'),
    # ========================= RESP ==============
    path('resp/', views.RespListView.as_view(), name='resp_list'),
-   path("resp/add/", views.RespEditView.as_view(), name='resp_add'),
+   path("resp/add/", views.RespCreateView.as_view(), name='resp_add'),
    path("resp/delete/", views.RespBulkDeleteView.as_view(), name='resp_bulk_delete'),
    path('resp/<int:pk>/', views.RespView.as_view(), name='resp'),
    path('resp/<int:pk>/edit/', views.RespEditView.as_view(), name='resp_edit'),
