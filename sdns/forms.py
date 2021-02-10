@@ -28,8 +28,8 @@ class RegisterFilterForm(BootstrapMixin, forms.ModelForm):
         model = Register
         fields = [
             'ip',
-            'host',
-            'domain',
+            # 'host',
+            # 'domain',
         ]
 
 # ================= DOMAIN =====================
