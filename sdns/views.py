@@ -104,15 +104,15 @@ class DomainDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 # ===========================Resposáveis==========================================
 
+
 class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
     filterset = RespFilter
     filterset_form = RespFilterForm
     table = RespTable
-    action_buttons = ('export')
-    # template_name = 'sdns/resp_list.html'
-    permissions = {'add'}
+    template_name = 'sdns/resp_list.html'
+
 
 class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_resp'
@@ -145,7 +145,6 @@ class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 #                   ======BULK VIEWS=======
 #
 
-
 class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
     permission_required = 'dhcp.add_dhcp'
     queryset = Resp.objects.all()
@@ -153,6 +152,14 @@ class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
     table = RespTable
     default_return_url = 'plugins:sdns:resp_list'
 
+
+class RespBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'dhcp.edit_dhcp'
+    queryset = Resp.objects.all()
+    filterset = RespFilter
+    table = RespTable
+    form = RespForm
+    default_return_url = 'plugins:sdns:resp_list'
 
 
 class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
