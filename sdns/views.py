@@ -69,7 +69,7 @@ class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     model = Domain
     queryset = Domain.objects.all()
     model_form =  DomainForm
-    template_name = 'sdns/domain_edit.html'
+    #template_name = 'sdns/domain_edit.html'
     default_return_url = 'plugins:sdns:domain_list'
 
 class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
@@ -116,7 +116,7 @@ class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     queryset = Resp.objects.all()
     model_form =  RespForm
     default_return_url = 'plugins:sdns:resp_list'
-        
+
 class RespView(View):
     """Single virtual circuits view, identified by ID."""
 
@@ -140,13 +140,20 @@ class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 #
 #                   ======BULK VIEWS=======
-#    
+#
+
+
+class RespBulkImportView(generic.BulkImportView):
+    queryset = Resp.objects.all()
+    model_form = RespCSVForm
+    table = RespTable
+
 
 class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_resp'
     queryset = Resp.objects.all()
     table = RespTable
-    default_return_url = 'plugins:sdns:resp_list'
+    
 
 
 # ===========================Ns==========================================
@@ -298,7 +305,7 @@ class DomainServListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset_form = DomainServFilterForm
     table = DomainServTable
     action_buttons = ('export')
-    
+
     # template_name = 'sdns/domainserv_list.html'
 
 class DomainServCreateView(PermissionRequiredMixin, generic.ObjectEditView):
@@ -306,8 +313,8 @@ class DomainServCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     model = DomainServ
     queryset = DomainServ.objects.all()
     model_form =  DomainServForm
-    template_name = 'sdns/domainserv_edit.html'
-    # default_return_url = 'plugins:sdns:domainserv_list'
+    #template_name = 'sdns/domainserv_edit.html'
+    default_return_url = 'plugins:sdns:domainserv_list'
 
 class DomainServBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_domainserv'
@@ -335,8 +342,3 @@ class DomainServDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_domainserv'
     model = DomainServ
     default_return_url = 'plugins:sdns:domainserv_list'
-
-
-
-
-
