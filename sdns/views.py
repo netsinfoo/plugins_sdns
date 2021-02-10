@@ -105,9 +105,9 @@ class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = RespFilter
     filterset_form = RespFilterForm
     table = RespTable
-    template_name = 'sdns/resp_list.html'
+    action_buttons = ('export')
 
-class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
+class RespEditView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_resp'
     model = Resp
     queryset = Resp.objects.all()
@@ -134,8 +134,8 @@ class RespView(View):
             'vlans': vlans,
         })
 
-class RespEditView(RespCreateView):
-    permission_required = 'sdns.change_sdns'
+# class RespEditView(RespCreateView):
+#     permission_required = 'sdns.change_sdns'
 
 class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_resp'
