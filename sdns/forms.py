@@ -1,6 +1,7 @@
 from django import forms
+from extras.forms import AddRemoveTagsForm, CustomFieldBulkEditForm, CustomFieldModelCSVForm, CustomFieldModelForm, CustomFieldFilterForm
 
-from utilities.forms import BootstrapMixin
+from utilities.forms import BootstrapMixin, CSVChoiceField, CSVModelChoiceField, CSVModelForm
 
 from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
@@ -22,7 +23,7 @@ class RegisterFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Register
         fields = [
@@ -48,7 +49,7 @@ class DomainFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Domain
         fields = [
@@ -74,7 +75,7 @@ class RespFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Resp
         fields = [
@@ -82,6 +83,26 @@ class RespFilterForm(BootstrapMixin, forms.ModelForm):
             'tipo',
             'dom',
         ]
+
+        #==========================
+        #    Bulks
+        #====================
+
+
+class RespCSVForm(CSVModelForm):
+    dom = CSVModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text="Dominio Dns)"
+    )
+
+    class Meta:
+        model = Resp
+        fields = Resp.csv_headers
+
+
+
 
 # ================= Ns =====================
 
@@ -100,7 +121,7 @@ class NsFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Ns
         fields = [
@@ -126,7 +147,7 @@ class MxFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Mx
         fields = [
@@ -152,7 +173,7 @@ class CtsFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = Cts
         fields = [
@@ -160,8 +181,8 @@ class CtsFilterForm(BootstrapMixin, forms.ModelForm):
             'reg',
             'content',
         ]
- 
- # ================= RESP =====================
+
+# ================= RESP =====================
 
 # ================= DomainServ =====================
 class DomainServForm(BootstrapMixin, forms.ModelForm):
@@ -179,7 +200,7 @@ class DomainServFilterForm(BootstrapMixin, forms.ModelForm):
         required=False,
         label="Search",
     )
-   
+
     class Meta:
         model = DomainServ
         fields = [

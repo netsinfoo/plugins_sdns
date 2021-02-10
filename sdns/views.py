@@ -4,8 +4,11 @@ from django.views.generic import View
 from netbox.views import generic
 
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm
+
+from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm
+
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
+
 from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable
 # Create your views here.
 # =======================Registros========================================
@@ -153,7 +156,7 @@ class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_resp'
     queryset = Resp.objects.all()
     table = RespTable
-    
+
 
 
 # ===========================Ns==========================================

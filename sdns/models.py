@@ -20,6 +20,16 @@ class Resp(models.Model):
     def __str__(self):
         return self.name
 
+    csv_headers = ['name','tipo','dom']
+
+    def to_csv(self):
+        return(
+            self.name,
+            self.tipo,
+            self.dom,
+        )
+
+
     # def get_absolute_url(self):
     #     return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
 
