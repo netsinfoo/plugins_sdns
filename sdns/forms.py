@@ -80,8 +80,8 @@ class RespFilterForm(BootstrapMixin, forms.ModelForm):
         model = Resp
         fields = [
             'name',
-            'tipo',
-            'dom',
+            # 'tipo',
+            # 'dom',
         ]
 
         #==========================

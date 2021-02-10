@@ -146,16 +146,20 @@ class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 #
 
 
-class RespBulkImportView(generic.BulkImportView):
+class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
+    permission_required = 'dhcp.add_dhcp'
     queryset = Resp.objects.all()
     model_form = RespCSVForm
     table = RespTable
+    default_return_url = 'plugins:sdns:resp_list'
+
 
 
 class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_resp'
     queryset = Resp.objects.all()
     table = RespTable
+    default_return_url = 'plugins:sdns:resp_list'
 
 
 
