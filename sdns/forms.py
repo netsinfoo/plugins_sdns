@@ -76,9 +76,18 @@ class DomainFilterForm(BootstrapMixin, forms.ModelForm):
         model = Domain
         fields = [
             'name',
-            'date_joined',
-            'owner',
+            # 'date_joined',
+            # 'owner',
         ]
+
+
+class DomainCSVForm(CSVModelForm):
+    
+
+    class Meta:
+        model = Domain
+        fields = Domain.csv_headers
+
 
 # ================= RESP =====================
 
@@ -148,9 +157,29 @@ class NsFilterForm(BootstrapMixin, forms.ModelForm):
         model = Ns
         fields = [
             'ns',
-            'tipo',
-            'dom',
+            # 'tipo',
+            # 'dom',
         ]
+
+class NsCSVForm(CSVModelForm):
+    ns = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        to_field_name='IP',
+        help_text="Registro A/AAAA)")
+
+    dom = CSVModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text="Dominio Dns)")
+
+    class Meta:
+        model = Ns
+        fields = Ns.csv_headers
+
+
+
 
 # ================= Mx =====================
 
@@ -174,9 +203,26 @@ class MxFilterForm(BootstrapMixin, forms.ModelForm):
         model = Mx
         fields = [
             'mx',
-            'prior',
-            'dom',
+            # 'prior',
+            # 'dom',
         ]
+
+class MxCSVForm(CSVModelForm):
+    mx = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        to_field_name='IP',
+        help_text="Registro A/AAAA)")
+
+    dom = CSVModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text="Dominio Dns)")
+
+    class Meta:
+        model = Mx
+        fields = Mx.csv_headers
 
 # ================= Cts =====================
 

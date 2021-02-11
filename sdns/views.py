@@ -5,7 +5,7 @@ from netbox.views import generic
 
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
 
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm
+from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
@@ -28,11 +28,6 @@ class RegisterCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     # template_name = 'sdns/register_edit.html'
     default_return_url = 'plugins:sdns:register_list'
 
-class RegisterBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_register'
-    queryset = Register.objects.filter()
-    table = RegisterTable
-    default_return_url = 'plugins:sdns:register_list'
 
 class RegisterView(View):
     """Single virtual circuits view, identified by ID."""
@@ -50,6 +45,10 @@ class RegisterView(View):
 class RegisterEditView(RegisterCreateView):
     permission_required = 'sdns.change_sdns'
 
+class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
+    permission_required = 'sdns.delete_register'
+    model = Register
+    default_return_url = 'plugins:sdns:register_list'
 
 #
 #                   ======BULK VIEWS=======
@@ -73,9 +72,10 @@ class RegisterBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
     default_return_url = 'plugins:sdns:register_list'
 
 
-class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
+class RegisterBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_register'
-    model = Register
+    queryset = Register.objects.filter()
+    table = RegisterTable
     default_return_url = 'plugins:sdns:register_list'
 
 # ===========================Domain==========================================
@@ -96,11 +96,6 @@ class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     #template_name = 'sdns/domain_edit.html'
     default_return_url = 'plugins:sdns:domain_list'
 
-class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_domain'
-    queryset = Domain.objects.filter()
-    table = DomainTable
-    default_return_url = 'plugins:sdns:domain_list'
 
 class DomainView(View):
     """Single virtual circuits view, identified by ID."""
@@ -122,6 +117,33 @@ class DomainDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_domain'
     model = Domain
     default_return_url = 'plugins:sdns:domain_list'
+
+#
+#                   ======BULK VIEWS=======
+#
+
+class DomainBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'sdns.add_dhcp'
+    queryset = Domain.objects.all()
+    model_form = DomainCSVForm
+    table = DomainTable
+    default_return_url = 'plugins:sdns:domain_list'
+
+
+class DomainBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'sdns.edit_dhcp'
+    queryset = Domain.objects.all()
+    filterset = DomainFilter
+    table = DomainTable
+    form = DomainForm
+    default_return_url = 'plugins:sdns:domain_list'
+
+class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_domain'
+    queryset = Domain.objects.filter()
+    table = DomainTable
+    default_return_url = 'plugins:sdns:domain_list'
+
 
 # ===========================Resposáveis==========================================
 
@@ -200,7 +222,7 @@ class NsListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset_form = NsFilterForm
     table = NsTable
     action_buttons = ('export')
-    # template_name = 'sdns/ns_list.html'
+    template_name = 'sdns/ns_list.html'
 
 class NsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_ns'
@@ -210,11 +232,6 @@ class NsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     # template_name = 'sdns/ns_edit.html'
     default_return_url = 'plugins:sdns:ns_list'
 
-class NsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_ns'
-    queryset = Ns.objects.filter()
-    table = NsTable
-    default_return_url = 'plugins:sdns:ns_list'
 
 class NsView(View):
     """Single virtual circuits view, identified by ID."""
@@ -237,6 +254,34 @@ class NsDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     model = Ns
     default_return_url = 'plugins:sdns:ns_list'
 
+
+#
+#                   ======BULK VIEWS=======
+#
+
+
+class NsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'dhcp.add_dhcp'
+    queryset = Ns.objects.all()
+    model_form = NsCSVForm
+    table = NsTable
+    default_return_url = 'plugins:sdns:ns_list'
+
+
+class NsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'dhcp.edit_dhcp'
+    queryset = Ns.objects.all()
+    filterset = NsFilter
+    table = NsTable
+    form = NsForm
+    default_return_url = 'plugins:sdns:ns_list'
+
+class NsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_ns'
+    queryset = Ns.objects.filter()
+    table = NsTable
+    default_return_url = 'plugins:sdns:ns_list'
+
 # ===========================Mx==========================================
 
 class MxListView(PermissionRequiredMixin, generic.ObjectListView):
@@ -245,8 +290,7 @@ class MxListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = MxFilter
     filterset_form = MxFilterForm
     table = MxTable
-    action_buttons = ('export')
-    # template_name = 'sdns/mx_list.html'
+    template_name = 'sdns/mx_list.html'
 
 class MxCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_mx'
@@ -256,11 +300,6 @@ class MxCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     # template_name = 'sdns/mx_edit.html'
     default_return_url = 'plugins:sdns:mx_list'
 
-class MxBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_mx'
-    queryset = Mx.objects.filter()
-    table = MxTable
-    default_return_url = 'plugins:sdns:mx_list'
 
 class MxView(View):
     """Single virtual circuits view, identified by ID."""
@@ -283,6 +322,32 @@ class MxDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     model = Mx
     default_return_url = 'plugins:sdns:mx_list'
 
+#
+#                   ======BULK VIEWS=======
+#
+
+
+class MxBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'dhcp.add_dhcp'
+    queryset = Mx.objects.all()
+    model_form = MxCSVForm
+    table = MxTable
+    default_return_url = 'plugins:sdns:mx_list'
+
+
+class MxBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'dhcp.edit_dhcp'
+    queryset = Mx.objects.all()
+    filterset = MxFilter
+    table = MxTable
+    form = MxForm
+    default_return_url = 'plugins:sdns:mx_list'
+
+class MxBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_mx'
+    queryset = Mx.objects.filter()
+    table = MxTable
+    default_return_url = 'plugins:sdns:mx_list'
 # ===========================Cts==========================================
 
 class CtsListView(PermissionRequiredMixin, generic.ObjectListView):

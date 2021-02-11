@@ -14,6 +14,8 @@ urlpatterns = [
    # ========================= DOMAIN ==============
    path('domain', views.DomainListView.as_view(), name='domain_list') ,
    path("domain/add/", views.DomainCreateView.as_view(), name='domain_add'),
+   path('domain/import/', views.DomainBulkImportView.as_view(), name='domain_import'),
+   path('domain/edit/', views.DomainBulkEditView.as_view(), name='domain_bulk_edit'),
    path("domain/delete/", views.DomainBulkDeleteView.as_view(), name='domain_bulk_delete'),
    path('domain/<int:pk>/', views.DomainView.as_view(), name='domain'),
    path('domain/<int:pk>/edit/', views.DomainEditView.as_view(), name='domain_edit'),
@@ -28,8 +30,10 @@ urlpatterns = [
    path('resp/<int:pk>/edit/', views.RespEditView.as_view(), name='resp_edit'),
    path('resp/<int:pk>/delete/', views.RespDeleteView.as_view(), name='resp_delete'),
    # ========================= Ns ==============
-   path('ns', views.NsListView.as_view(), name='ns_list') ,
+   path('ns/', views.NsListView.as_view(), name='ns_list') ,
    path("ns/add/", views.NsCreateView.as_view(), name='ns_add'),
+   path('ns/import/', views.NsBulkImportView.as_view(), name='ns_import'),
+   path('ns/edit/', views.NsBulkEditView.as_view(), name='ns_bulk_edit'),
    path("ns/delete/", views.NsBulkDeleteView.as_view(), name='ns_bulk_delete'),
    path('ns/<int:pk>/', views.NsView.as_view(), name='ns'),
    path('ns/<int:pk>/edit/', views.NsEditView.as_view(), name='ns_edit'),

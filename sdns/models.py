@@ -55,6 +55,16 @@ class Domain(models.Model):
     def __str__(self):
         return self.name
 
+    csv_headers = ['owner', 'name', 'date_joined']
+
+    def to_csv(self):
+        return (
+            self.owner,
+            self.name,
+            self.date_joined,
+        )
+
+
 class Ns(models.Model):
     TIPO = [('M' , 'Master'), ('S', 'Slave')]
 
@@ -76,6 +86,16 @@ class Ns(models.Model):
     def __str__(self):
         return self.tipo
 
+    csv_headers = ['ns', 'dom', 'tipo']
+
+    def to_csv(self):
+        return (
+            self.ns,
+            self.dom,
+            self.tipo,
+        )
+
+
 class Mx(models.Model):
     mx =  models.ForeignKey('ipam.IPAddress', models.SET_NULL, blank= True, null=True)
     # models.OneToOneField(
@@ -95,6 +115,16 @@ class Mx(models.Model):
 
     def __str__(self):
         return self.prior
+
+    csv_headers = ['mx', 'dom', 'prior']
+
+    def to_csv(self):
+        return (
+            self.mx,
+            self.dom,
+            self.prior,
+        )
+    
 
 class Register(models.Model):
     REG= [
