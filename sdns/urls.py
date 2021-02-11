@@ -41,6 +41,8 @@ urlpatterns = [
    # ========================= Mx ==============
    path('mx', views.MxListView.as_view(), name='mx_list') ,
    path("mx/add/", views.MxCreateView.as_view(), name='mx_add'),
+   path('mx/import/', views.MxBulkImportView.as_view(), name='mx_import'),
+   path('mx/edit/', views.MxBulkEditView.as_view(), name='mx_bulk_edit'),
    path("mx/delete/", views.MxBulkDeleteView.as_view(), name='mx_bulk_delete'),
    path('mx/<int:pk>/', views.MxView.as_view(), name='mx'),
    path('mx/<int:pk>/edit/', views.MxEditView.as_view(), name='mx_edit'),
@@ -48,6 +50,8 @@ urlpatterns = [
    # ========================= Cts ==============
    path('cts', views.CtsListView.as_view(), name='cts_list') ,
    path("cts/add/", views.CtsCreateView.as_view(), name='cts_add'),
+   path('cts/import/', views.CtsBulkImportView.as_view(), name='cts_import'),
+   path('cts/edit/', views.CtsBulkEditView.as_view(), name='cts_bulk_edit'),
    path("cts/delete/", views.CtsBulkDeleteView.as_view(), name='cts_bulk_delete'),
    path('cts/<int:pk>/', views.CtsView.as_view(), name='cts'),
    path('cts/<int:pk>/edit/', views.CtsEditView.as_view(), name='cts_edit'),
@@ -55,6 +59,8 @@ urlpatterns = [
    # ========================= DomainServ ==============
    path('domainserv', views.DomainServListView.as_view(), name='domainserv_list') ,
    path("domainserv/add/", views.DomainServCreateView.as_view(), name='domainserv_add'),
+   path('domainserv/import/', views.DomainServBulkImportView.as_view(), name='domainserv_import'),
+   path('domainserv/edit/', views.DomainServBulkEditView.as_view(), name='domainserv_bulk_edit'),
    path("domainserv/delete/", views.DomainServBulkDeleteView.as_view(), name='domainserv_bulk_delete'),
    path('domainserv/<int:pk>/', views.DomainServView.as_view(), name='domainserv'),
    path('domainserv/<int:pk>/edit/', views.DomainServEditView.as_view(), name='domainserv_edit'),

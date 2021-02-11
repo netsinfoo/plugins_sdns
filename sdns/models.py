@@ -124,7 +124,7 @@ class Mx(models.Model):
             self.dom,
             self.prior,
         )
-    
+
 
 class Register(models.Model):
     REG= [
@@ -187,6 +187,15 @@ class Cts(models.Model):
     def __str__(self):
         return self.content
 
+    csv_headers = ['registro', 'reg', 'content']
+
+    def to_csv(self):
+        return (
+            self.registro,
+            self.reg,
+            self.content,
+        )
+
 
 # class Service(models.Model):
 #     nome = models.CharField(max_length=30)
@@ -205,3 +214,12 @@ class DomainServ(models.Model):
     service = models.ForeignKey('ipam.Service', on_delete=models.CASCADE)
     dominio = models.ForeignKey('Domain',  on_delete=models.CASCADE)
     relation = models.CharField(max_length=1, choices=REL)
+
+    csv_headers = ['service', 'dominio', 'relation']
+
+    def to_csv(self):
+        return (
+            self.service,
+            self.dominio,
+            self.relation,
+        )

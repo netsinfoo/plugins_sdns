@@ -91,6 +91,7 @@ class DomainCSVForm(CSVModelForm):
 
 # ================= RESP =====================
 
+
 class RespForm(BootstrapMixin, forms.ModelForm):
 
     class Meta:
@@ -246,11 +247,21 @@ class CtsFilterForm(BootstrapMixin, forms.ModelForm):
         model = Cts
         fields = [
             'registro',
-            'reg',
-            'content',
+            # 'reg',
+            # 'content',
         ]
 
-# ================= RESP =====================
+class CtsCSVForm(CSVModelForm):
+    registro = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        to_field_name='IP',
+        help_text="Registro A/AAAA")
+
+    class Meta:
+        model = Cts
+        fields = Cts.csv_headers
+
 
 # ================= DomainServ =====================
 class DomainServForm(BootstrapMixin, forms.ModelForm):
@@ -272,7 +283,24 @@ class DomainServFilterForm(BootstrapMixin, forms.ModelForm):
     class Meta:
         model = DomainServ
         fields = [
-            'service',
+            # 'service',
             'dominio',
-            'relation',
+            # 'relation',
         ]
+
+class DomainServCSVForm(CSVModelForm):
+    service = CSVModelChoiceField(
+        queryset=Service.objects.all(),
+        required=False,
+        to_field_name='Serviço',
+        help_text="Serviço do modulo ipam")
+
+    dominio = CSVModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text="Dominio Dns")
+
+    class Meta:
+        model = DomainServ
+        fields = DomainServ.csv_headers

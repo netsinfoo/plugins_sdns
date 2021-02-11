@@ -5,7 +5,7 @@ from netbox.views import generic
 
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
 
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm
+from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
@@ -356,10 +356,7 @@ class CtsListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = CtsFilter
     filterset_form = CtsFilterForm
     table = CtsTable
-    action_buttons = ('export')
-
-
-    # template_name = 'sdns/cts_list.html'
+    template_name = 'sdns/cts_list.html'
 
 class CtsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_cts'
@@ -369,11 +366,6 @@ class CtsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     # template_name = 'sdns/cts_edit.html'
     default_return_url = 'plugins:sdns:cts_list'
 
-class CtsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_cts'
-    queryset = Cts.objects.filter()
-    table = CtsTable
-    default_return_url = 'plugins:sdns:cts_list'
 
 class CtsView(View):
     """Single virtual circuits view, identified by ID."""
@@ -396,6 +388,30 @@ class CtsDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     model = Cts
     default_return_url = 'plugins:sdns:cts_list'
 
+#
+#                   ======BULK VIEWS=======
+#
+
+class CtsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'dhcp.add_dhcp'
+    queryset = Cts.objects.all()
+    model_form = CtsCSVForm
+    table = CtsTable
+    default_return_url = 'plugins:sdns:Cts_list'
+
+class CtsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'dhcp.edit_dhcp'
+    queryset = Cts.objects.all()
+    filterset = CtsFilter
+    table = CtsTable
+    form = CtsForm
+    default_return_url = 'plugins:sdns:Cts_list'
+
+class CtsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_cts'
+    queryset = Cts.objects.filter()
+    table = CtsTable
+    default_return_url = 'plugins:sdns:cts_list'
 # ===========================DomainServ==========================================
 
 class DomainServListView(PermissionRequiredMixin, generic.ObjectListView):
@@ -416,11 +432,6 @@ class DomainServCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     #template_name = 'sdns/domainserv_edit.html'
     default_return_url = 'plugins:sdns:domainserv_list'
 
-class DomainServBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
-    permission_required = 'sdns.delete_domainserv'
-    queryset = DomainServ.objects.filter()
-    table = DomainServTable
-    default_return_url = 'plugins:sdns:domainserv_list'
 
 class DomainServView(View):
     """Single virtual circuits view, identified by ID."""
@@ -441,4 +452,33 @@ class DomainServEditView(DomainServCreateView):
 class DomainServDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_domainserv'
     model = DomainServ
+    default_return_url = 'plugins:sdns:domainserv_list'
+
+
+#
+#                   ======BULK VIEWS=======
+#
+
+
+class DomainServBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'dhcp.add_dhcp'
+    queryset = DomainServ.objects.all()
+    model_form = DomainServCSVForm
+    table = DomainServTable
+    default_return_url = 'plugins:sdns:domainserv_list'
+
+
+class DomainServBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'dhcp.edit_dhcp'
+    queryset = DomainServ.objects.all()
+    filterset = DomainServFilter
+    table = DomainServTable
+    form = DomainServForm
+    default_return_url = 'plugins:sdns:domainserv_list'
+
+
+class DomainServBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
+    permission_required = 'sdns.delete_domainserv'
+    queryset = DomainServ.objects.filter()
+    table = DomainServTable
     default_return_url = 'plugins:sdns:domainserv_list'
