@@ -420,9 +420,7 @@ class DomainServListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = DomainServFilter
     filterset_form = DomainServFilterForm
     table = DomainServTable
-    action_buttons = ('export')
-
-    # template_name = 'sdns/domainserv_list.html'
+    template_name = 'sdns/domainserv_list.html'
 
 class DomainServCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_domainserv'
