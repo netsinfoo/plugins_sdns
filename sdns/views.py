@@ -5,7 +5,7 @@ from netbox.views import generic
 
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
 
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm
+from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
@@ -18,8 +18,7 @@ class RegisterListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = RegisterFilter
     filterset_form = RegisterFilterForm
     table = RegisterTable
-    action_buttons = ('export')
-    # template_name = 'sdns/register_list.html'
+    template_name = 'sdns/register_list.html'
 
 class RegisterCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_register'
@@ -51,6 +50,29 @@ class RegisterView(View):
 class RegisterEditView(RegisterCreateView):
     permission_required = 'sdns.change_sdns'
 
+
+#
+#                   ======BULK VIEWS=======
+#
+
+
+class RegisterBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
+    permission_required = 'sdns.add_dhcp'
+    queryset = Register.objects.all()
+    model_form = RegisterCSVForm
+    table = RegisterTable
+    default_return_url = 'plugins:sdns:register_list'
+
+
+class RegisterBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+    permission_required = 'sdns.edit_dhcp'
+    queryset = Register.objects.all()
+    filterset = RegisterFilter
+    table = RegisterTable
+    form = RegisterForm
+    default_return_url = 'plugins:sdns:register_list'
+
+
 class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_register'
     model = Register
@@ -64,8 +86,7 @@ class DomainListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = DomainFilter
     filterset_form = DomainFilterForm
     table = DomainTable
-    action_buttons = ('export')
-    # template_name = 'sdns/domain_list.html'
+    template_name = 'sdns/domain_list.html'
 
 class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_domain'

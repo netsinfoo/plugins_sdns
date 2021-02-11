@@ -3,8 +3,10 @@ from . import views
 
 urlpatterns = [
    # ====================Registros======================================
-   path('register', views.RegisterListView.as_view(), name='register_list') ,
+   path('register/', views.RegisterListView.as_view(), name='register_list') ,
    path("register/add/", views.RegisterCreateView.as_view(), name='register_add'),
+   path('register/import/', views.RegisterBulkImportView.as_view(), name='register_import'),
+   path('register/edit/', views.RegisterBulkEditView.as_view(), name='register_bulk_edit'),
    path("register/delete/", views.RegisterBulkDeleteView.as_view(), name='register_bulk_delete'),
    path('register/<int:pk>/', views.RegisterView.as_view(), name='register'),
    path('register/<int:pk>/edit/', views.RegisterEditView.as_view(), name='register_edit'),

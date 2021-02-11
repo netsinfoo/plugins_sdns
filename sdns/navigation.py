@@ -14,7 +14,7 @@ menu_items = (
                 color=ButtonColorChoices.GREEN,
             ),
             PluginMenuButton(
-                link='plugins:sdns:register_add',
+                link='plugins:sdns:register_import',
                 title='Import news registers',
                 icon_class='mdi mdi-database-import-outline',
                 color=ButtonColorChoices.BLUE,

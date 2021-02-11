@@ -5,6 +5,8 @@ from utilities.forms import BootstrapMixin, CSVChoiceField, CSVModelChoiceField,
 
 from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
+from ipam.models import IPAddress, Service
+
 BLANK_CHOICE = (("", "---------"),)
 
 
@@ -31,6 +33,26 @@ class RegisterFilterForm(BootstrapMixin, forms.ModelForm):
             # 'host',
             # 'domain',
         ]
+
+
+
+class RegisterCSVForm(CSVModelForm):
+    dom = CSVModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False,
+        to_field_name='name',
+        help_text="Dominio Dns)")
+
+
+    ip = CSVModelChoiceField(
+        queryset=IPAddress.objects.all(),
+        required=False,
+        to_field_name='IP',
+        help_text="Registro A/AAAA)")
+
+    class Meta:
+        model = Register
+        fields = Register.csv_headers
 
 # ================= DOMAIN =====================
 

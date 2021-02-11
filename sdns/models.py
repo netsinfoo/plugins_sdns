@@ -123,6 +123,19 @@ class Register(models.Model):
     def __str__(self):
         return self.host +"."+ str(self.domain)
 
+
+
+    csv_headers = ['domain', 'host', 'reg', 'ip']
+
+    def to_csv(self):
+        return (
+            self.domain,
+            self.host,
+            self.reg,
+            self.ip,
+        )
+
+
 class Cts(models.Model):
 
     REGI= [
@@ -162,4 +175,3 @@ class DomainServ(models.Model):
     service = models.ForeignKey('ipam.Service', on_delete=models.CASCADE)
     dominio = models.ForeignKey('Domain',  on_delete=models.CASCADE)
     relation = models.CharField(max_length=1, choices=REL)
-
