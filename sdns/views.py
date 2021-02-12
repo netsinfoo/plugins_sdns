@@ -5,7 +5,7 @@ from netbox.views import generic
 
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
 
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm
+from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm, RespBulkEditForm
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
@@ -56,7 +56,7 @@ class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 
 class RegisterBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'sdns.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Register.objects.all()
     model_form = RegisterCSVForm
     table = RegisterTable
@@ -64,7 +64,7 @@ class RegisterBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
 
 
 class RegisterBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = Register.objects.all()
     filterset = RegisterFilter
     table = RegisterTable
@@ -123,7 +123,7 @@ class DomainDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 #
 
 class DomainBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'sdns.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Domain.objects.all()
     model_form = DomainCSVForm
     table = DomainTable
@@ -131,7 +131,7 @@ class DomainBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
 
 
 class DomainBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = Domain.objects.all()
     filterset = DomainFilter
     table = DomainTable
@@ -189,19 +189,22 @@ class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 #
 
 class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
-    permission_required = 'dhcp.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
-    model_form = RespCSVForm
+    form = RespCSVForm
     table = RespTable
     default_return_url = 'plugins:sdns:resp_list'
 
 
 class RespBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'dhcp.edit_dhcp'
+    permission_required = 'sdns.change_resp'
     queryset = Resp.objects.all()
     filterset = RespFilter
     table = RespTable
+    model_form = RespBulkEditForm
     form = RespForm
+    model = Resp
+    template_name = 'sdns/resp_bulk_edit.html'
     default_return_url = 'plugins:sdns:resp_list'
 
 
@@ -261,7 +264,7 @@ class NsDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 
 class NsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'dhcp.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Ns.objects.all()
     model_form = NsCSVForm
     table = NsTable
@@ -269,7 +272,7 @@ class NsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
 
 
 class NsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'dhcp.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = Ns.objects.all()
     filterset = NsFilter
     table = NsTable
@@ -328,7 +331,7 @@ class MxDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 
 class MxBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'dhcp.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Mx.objects.all()
     model_form = MxCSVForm
     table = MxTable
@@ -336,7 +339,7 @@ class MxBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
 
 
 class MxBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'dhcp.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = Mx.objects.all()
     filterset = MxFilter
     table = MxTable
@@ -393,14 +396,14 @@ class CtsDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 #
 
 class CtsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'dhcp.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = Cts.objects.all()
     model_form = CtsCSVForm
     table = CtsTable
     default_return_url = 'plugins:sdns:Cts_list'
 
 class CtsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'dhcp.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = Cts.objects.all()
     filterset = CtsFilter
     table = CtsTable
@@ -459,7 +462,7 @@ class DomainServDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
 
 
 class DomainServBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
-    permission_required = 'dhcp.add_dhcp'
+    permission_required = 'sdns.add_resp'
     queryset = DomainServ.objects.all()
     model_form = DomainServCSVForm
     table = DomainServTable
@@ -467,7 +470,7 @@ class DomainServBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
 
 
 class DomainServBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'dhcp.edit_dhcp'
+    permission_required = 'sdns.edit_resp'
     queryset = DomainServ.objects.all()
     filterset = DomainServFilter
     table = DomainServTable

@@ -20,6 +20,10 @@ class Resp(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
+    
+    
     csv_headers = ['name','tipo','dom']
 
     def to_csv(self):
@@ -30,12 +34,10 @@ class Resp(models.Model):
         )
 
 
-    # def get_absolute_url(self):
-    #     return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
 
 class Domain(models.Model):
 
-
+g
     OWN = [
         ('D', 'DIRETOR'),
         ('C', 'COODENADOR'),

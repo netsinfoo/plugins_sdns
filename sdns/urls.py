@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = 'sdns-api'
+
 urlpatterns = [
    # ====================Registros======================================
    path('register/', views.RegisterListView.as_view(), name='register_list') ,

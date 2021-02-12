@@ -21,6 +21,7 @@ sdns/__pycache__/__init__.cpython-37.pyc
 sdns/__pycache__/__init__.cpython-38.pyc
 sdns/__pycache__/admin.cpython-37.pyc
 sdns/__pycache__/admin.cpython-38.pyc
+sdns/__pycache__/choices.cpython-38.pyc
 sdns/__pycache__/filters.cpython-37.pyc
 sdns/__pycache__/filters.cpython-38.pyc
 sdns/__pycache__/forms.cpython-37.pyc
@@ -53,10 +54,18 @@ sdns/migrations/__pycache__/0002_auto_20210205_1623.cpython-38.pyc
 sdns/migrations/__pycache__/0002_auto_20210206_1446.cpython-38.pyc
 sdns/migrations/__pycache__/__init__.cpython-37.pyc
 sdns/migrations/__pycache__/__init__.cpython-38.pyc
+sdns/templates/sdns/base_list.html
 sdns/templates/sdns/cts.html
+sdns/templates/sdns/cts_list.html
 sdns/templates/sdns/domain.html
+sdns/templates/sdns/domain_list.html
 sdns/templates/sdns/domainserv.html
+sdns/templates/sdns/domainserv_list.html
 sdns/templates/sdns/mx.html
+sdns/templates/sdns/mx_list.html
 sdns/templates/sdns/ns.html
+sdns/templates/sdns/ns_list.html
 sdns/templates/sdns/register.html
+sdns/templates/sdns/register_list.html
 sdns/templates/sdns/resp.html
+sdns/templates/sdns/resp_list.html
