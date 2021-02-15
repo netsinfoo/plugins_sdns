@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
-{% block header %}
+{% block header %} <h1>sdns-api</h1>
 {% with config=settings.PLUGINS_CONFIG.sdns %}
-<div class="pull-right noprint">
+
+
+{% comment %} <div class="pull-right noprint">
     <a href="{% url 'plugins:sdns:register_add' %}?ip={{ register.ip }}&host={{ register.host }}&domain={{ register.domain }}" class="btn btn-success">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         Clone
@@ -78,6 +80,6 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 {% endwith %}
 {% endblock %}

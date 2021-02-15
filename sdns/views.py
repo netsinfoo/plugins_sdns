@@ -32,6 +32,7 @@ class RegisterCreateView(PermissionRequiredMixin, generic.ObjectEditView):
 class RegisterView(View):
     """Single virtual circuits view, identified by ID."""
 
+    template_name = 'sdns/resp_list.html'
     def get(self, request, pk):
         vc = get_object_or_404(VirtualCircuit.objects.filter(vcid=pk))
         vlan_ids = VirtualCircuitVLAN.objects.filter(virtual_circuit=vc).values_list('vlan_id', flat=True)
@@ -147,7 +148,6 @@ class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
 
 # ===========================Resposáveis==========================================
 
-
 class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
@@ -156,12 +156,14 @@ class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     table = RespTable
     template_name = 'sdns/resp_list.html'
 
-
 class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
     model_form =  RespForm
     default_return_url = 'plugins:sdns:resp_list'
+
+class RespEditView(RespCreateView):
+    permission_required = 'sdns.change_sdns'
 
 class RespView(View):
     """Single virtual circuits view, identified by ID."""
@@ -176,8 +178,6 @@ class RespView(View):
             'vlans': vlans,
         })
 
-class RespEditView(RespCreateView):
-    permission_required = 'sdns.change_sdns'
 
 class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_resp'
@@ -197,14 +197,12 @@ class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
 
 
 class RespBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.change_resp'
+    permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
     filterset = RespFilter
     table = RespTable
-    model_form = RespBulkEditForm
-    form = RespForm
-    model = Resp
-    template_name = 'sdns/resp_bulk_edit.html'
+    form = RespBulkEditForm
+    # template_name = 'sdns/resp_bulk_edit.html'
     default_return_url = 'plugins:sdns:resp_list'
 
 

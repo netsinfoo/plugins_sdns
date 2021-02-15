@@ -37,7 +37,7 @@ class Resp(models.Model):
 
 class Domain(models.Model):
 
-g
+
     OWN = [
         ('D', 'DIRETOR'),
         ('C', 'COODENADOR'),

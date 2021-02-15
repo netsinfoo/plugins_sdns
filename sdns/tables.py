@@ -61,7 +61,7 @@ class RespTable(BaseTable):
 
 class NsTable(BaseTable):
     pk = ToggleColumn()
-    name = tables.LinkColumn(
+    ns = tables.LinkColumn(
         viewname='plugins:sdns:ns_edit',
         args=[Accessor('pk')]
     )

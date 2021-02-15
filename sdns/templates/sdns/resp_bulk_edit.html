@@ -4,6 +4,11 @@
 
 {% block content %}
 <h1>{% block title %}Editing {{ table.rows|length }} {{ obj_type_plural|bettertitle }}{% endblock %}</h1>
+
+    <h1> form -> {{ form1 }} <br> table -> {{table}}  <br>OP -> {{ obj_type_plural }}<br>return_url -> {{ return_url}}    </h1>
+
+
+
 {% if form.errors %}
     <div class="panel panel-danger">
         <div class="panel-heading"><strong>Errors</strong></div>
@@ -12,13 +17,13 @@
         </div>
     </div>
 {% endif %}
-<form action="" method="post" class="form form-horizontal">
+{% comment %} <form action="" method="post" class="form form-horizontal">
     {% csrf_token %}
     {% if request.POST.return_url %}
         <input type="hidden" name="return_url" value="{{ request.POST.return_url }}" />
     {% endif %}
-    <h1> form -> {{ form }} <br> table -> {{table}}  <br>OP -> {{ obj_type_plural }}<br>return_url -> {{ return_url}}    </h1>
-    {{ form.as_p}}
+    <h1> form -> {{ form1 }} <br> table -> {{table}}  <br>OP -> {{ obj_type_plural }}<br>return_url -> {{ return_url}}    </h1>
+    {{ form1.as_p}}
     
     {% for field in form1 %}
         {{ field }}
@@ -58,5 +63,5 @@
 		    </div>
         </div>
     </div>
-</form>
+</form> {% endcomment %}
 {% endblock %}
