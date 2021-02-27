@@ -57,6 +57,9 @@ class Domain(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:domain_edit', kwargs={"pk": self.pk})
+
     csv_headers = ['owner', 'name', 'date_joined']
 
     def to_csv(self):

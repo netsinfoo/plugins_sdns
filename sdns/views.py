@@ -98,18 +98,31 @@ class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     default_return_url = 'plugins:sdns:domain_list'
 
 
-class DomainView(View):
+class DomainView(PermissionRequiredMixin, generic.ObjectView):
     """Single virtual circuits view, identified by ID."""
+    permission_required = 'plugins.sdns.add_domain'
+    queryset = Domain.objects.all()
 
-    def get(self, request, pk):
-        vc = get_object_or_404(VirtualCircuit.objects.filter(vcid=pk))
-        vlan_ids = VirtualCircuitVLAN.objects.filter(virtual_circuit=vc).values_list('vlan_id', flat=True)
-        vlans = [VLAN.objects.get(pk=vid) for vid in vlan_ids]
 
-        return render(request, 'netbox_virtual_circuit_plugin/virtual_circuit.html', {
-            'virtual_circuit': vc,
-            'vlans': vlans,
-        })
+    def get_extra_context(self, request, instance):
+        #Domains suport information
+        owner_dom = Resp.objects.filter(dom=instance, tipo='D').order_by('name').first()
+        owner_tec = Resp.objects.filter(dom=instance, tipo='T').order_by('name').first()
+        #Ns information
+        records_ns = Ns.objects.filter(dom=instance).prefetch_related('ns','dom')
+        Ns_table = NsTable(records_ns, orderable=False)
+        #Mx information
+        records_mx = Mx.objects.filter(dom=instance).prefetch_related('mx','dom')
+        Mx_table = MxTable(records_mx, orderable=False)
+
+        return {
+            'owner_dom': owner_dom,
+            'owner_tec': owner_tec,
+            'Mx_table': Mx_table,
+            'Ns_table': Ns_table,
+        }
+
+
 
 class DomainEditView(DomainCreateView):
     permission_required = 'sdns.change_sdns'

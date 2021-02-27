@@ -1,83 +1,177 @@
 {% extends 'base.html' %}
+{% load buttons %}
+{% load custom_links %}
+{% load helpers %}
+{% load plugins %}
+{% load render_table from django_tables2 %}
 
 {% block header %}
-{% with config=settings.PLUGINS_CONFIG.sdns %}
-<div class="pull-right noprint">
-    <a href="{% url 'plugins:sdns:register_add' %}?ip={{ register.ip }}&host={{ register.host }}&domain={{ register.domain }}" class="btn btn-success">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        Clone
-    </a>
-    <a href="{% url 'plugins:sdns:register_edit' pk=register.pk %}" class="btn btn-warning">
-        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-        Edit
-    </a>
-    <a href="{% url 'plugins:sdns:register_delete' pk=register.pk %}" class="btn btn-danger">
-        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-        Delete
-    </a>
-</div>
+    <div class="row noprint">
+        <div class="col-sm-8 col-md-9">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'plugins:sdns:domain_list' %}">Domain</a></li>
+                {% if object.domain %}
+                    <li><a href="{% url 'plugins:sdns:domain' pk=object.domain.pk %}">{{ object.domain }}</a></li>
+                {% endif %}
+                <li>{{ object }}</li>
+            </ol>
+        </div>
+        <div class="col-sm-4 col-md-3">
+            <form action="{% url 'plugins:sdns:domain_list' %}" method="get">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search IPs" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="mdi mdi-magnify" aria-hidden="true"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="pull-right noprint">
+        {% plugin_buttons object %}
+        {% if perms.plugins.sdns.add_domain %}
+            {% clone_button object %}
+        {% endif %}
+        {% if perms.plugins.sdns.change_domain %}
+            {%edit_button object %}
+        {% endif %}
+        {% if perms.plugins.sdns.delete_domain %}
+            {% delete_button object %}
+        {% endif %}
+    </div>
+    <h1>{% block title %}{{ object }}{% endblock %}</h1>
+    {% include 'inc/created_updated.html' %}
+    <div class="pull-right noprint">
+        {% custom_links object %}
+    </div>
+    <ul class="nav nav-tabs">
+        <li role="presentation"{% if not active_tab %} class="active"{% endif %}>
+            <a href="{{ object.get_absolute_url }}">Domain</a>
+        </li>
+        {% if perms.extras.view_objectchange %}
+            <li role="presentation"{% if active_tab == 'changelog' %} class="active"{% endif %}>
+                <a href="{% url 'plugins:sdns:domain_edit' pk=object.pk %}">Change Log</a>
+            </li>
+        {% endif %}
+    </ul>
 {% endblock %}
 
 {% block content %}
-{% with config=settings.PLUGINS_CONFIG.sdns %}
-    <h1>Register {{ register.ip }} ({{ register.host }} {{register.domain}})</h1>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <table class="table table-hover panel-body attr-table">
-                    <tr style="background-color:#f8f8f8;">
-                        <th>IP</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>Hosts</td>
-                        <td>{{ register.vcid }}</td>
-                    </tr>
-                    <tr>
-                        <td>Domains</td>
-                        <td>{{ register.name }}</td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td>{{ register.get_status_display }}</td>
-                    </tr>
-                    <tr>
-                        <td>Context</td>
-                        <td>{{ register.context }}</td>
-                    </tr>
-                </table>
+<div class="row">
+	<div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Dominio</strong>
             </div>
+            <table class="table table-hover panel-body attr-table">
+                <tr>
+                <td>Institutional Unit</td>
+                   <td>
+                        {% if object.vrf %}
+                            <a href="{% url 'plugins:sdns:vrf' pk=object.vrf.pk %}">{{ object.vrf }}</a>
+                        {% else %}
+                            <span>Superintendencia de Informática</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Owner</td>
+                    <td><a href="{{ object.resp }}">{{ owner_dom }}</a></td>
+                    
+                </tr>
+                <tr>
+                <tr>
+                    <td>Tecnical Suport</td>
+                    <td>{{ owner_tec }}</td>
+                </tr>
+                {% comment %} <tr>
+                    <td>Tenant</td>
+                    <td>
+                        {% if object.tenant %}
+                            {% if object.tenant.group %}
+                                <a href="{{ object.tenant.group.get_absolute_url }}">{{ object.tenant.group }}</a> /
+                            {% endif %}
+                            <a href="{{ object.tenant.get_absolute_url }}">{{ object.tenant }}</a>
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>
+                        <span class="label label-{{ object.get_status_class }}">{{ object.get_status_display }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td>
+                        {% if object.role %}
+                            <a href="{% url 'plugins:sdns:domain_list' %}?role={{ object.role }}">{{ object.get_role_display }}</a>
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>DNS Name</td>
+                    <td>{{ object.dns_name|placeholder }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ object.description|placeholder }}</td>
+                </tr>
+                <tr>
+                    <td>Assignment</td>
+                    <td>
+                        {% if object.assigned_object %}
+                            <span><a href="{{ object.assigned_object.parent.get_absolute_url }}">{{ object.assigned_object.parent }}</a> ({{ object.assigned_object }})</span>
+                        {% else %}
+                            <span class="text-muted">&mdash;</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>NAT (inside)</td>
+                    <td>
+                        {% if object.nat_inside %}
+                            <a href="{% url 'plugins:sdns:domain' pk=object.nat_inside.pk %}">{{ object.nat_inside }}</a>
+                            {% if object.nat_inside.assigned_object %}
+                                (<a href="{{ object.nat_inside.assigned_object.parent.get_absolute_url }}">{{ object.nat_inside.assigned_object.parent }}</a>)
+                            {% endif %}
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>NAT (outside)</td>
+                    <td>
+                        {% if object.nat_outside %}
+                            <a href="{% url 'plugins:sdns:domain' pk=object.nat_outside.pk %}">{{ object.nat_outside }}</a>
+                        {% else %}
+                            <span class="text-muted">None</span>
+                        {% endif %}
+                    </td>
+                </tr> {% endcomment %}
+            </table>
         </div>
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <table class="table table-hover panel-body attr-table">
-                    <tr style="background-color:#f8f8f8;">
-                        <th>VLAN</th>
-                        <th>Status</th>
-                        <th>Interface</th>
-                    </tr>
-                    {% for vlan in vlans %}
-                    <tr>
-                        <td><a href="{% url 'ipam:vlan_list' %}{{ vlan.pk }}">{{ vlan.vid }} ({{ vlan.name }})</a></td>
-                        <td><span class="label label-{{ vlan.get_status_class }}">{{ vlan.get_status_display }}</span></td>{% extends 'base.html' %}
-
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td class="text-muted">No VLAN has been assigned yet!</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-                </table>
-            </div>
-            <div class="pull-right noprint">
-                <a href="{% url 'plugins:sdns:register_add' %}?register={{ register.ip }}" class="btn btn-primary btn-xs">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    Assign a VLAN
-                </a>
-            </div>
-        </div>
+        {% include 'inc/custom_fields_panel.html' %}
+        {% include 'utilities/obj_table.html' with table=Mx_table table_template='panel_table.html' heading='Child Domain' panel_class='default noprint' %}
+        {% comment %} {% include 'extras/inc/tags_panel.html' with tags=object.tags.all url='plugins:sdns:domain_list' %} {% endcomment %}
+        {% plugin_left_page object %}
+	</div>
+	<div class="col-md-8">
+        {% include 'panel_table.html' with table=Ns_table heading='Ns Records'%}
+        {% include 'panel_table.html' with table=Mx_table  heading='Mx Records'%}
+        {% plugin_right_page object %}
+	</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {% plugin_full_width_page object %}
     </div>
-{% endwith %}
+</div>
 {% endblock %}

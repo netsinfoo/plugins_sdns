@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-
+app_name = 'sdns'
 urlpatterns = [
    path('', views.RegisterView.as_view(), name='sdns-api') ,
    # ====================Registros======================================
@@ -14,7 +14,7 @@ urlpatterns = [
    path('register/<int:pk>/edit/', views.RegisterEditView.as_view(), name='register_edit'),
    path('register/<int:pk>/delete/', views.RegisterDeleteView.as_view(), name='register_delete'),
    # ========================= DOMAIN ==============
-   path('domain', views.DomainListView.as_view(), name='domain_list') ,
+   path('domain/', views.DomainListView.as_view(), name='domain_list') ,
    path("domain/add/", views.DomainCreateView.as_view(), name='domain_add'),
    path('domain/import/', views.DomainBulkImportView.as_view(), name='domain_import'),
    path('domain/edit/', views.DomainBulkEditView.as_view(), name='domain_bulk_edit'),
