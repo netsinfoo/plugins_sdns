@@ -26,7 +26,7 @@ class RegisterTable(BaseTable):
 class DomainTable(BaseTable):
     pk = ToggleColumn()
     name = tables.LinkColumn(
-        viewname='plugins:sdns:domain_edit',
+        viewname='plugins:sdns:domain',
         args=[Accessor('pk')]
     )
 

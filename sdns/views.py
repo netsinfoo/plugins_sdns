@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.views.generic import View
 from netbox.views import generic
 
+from utilities.paginator import EnhancedPaginator, get_paginate_count
+
 from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
 
 from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm, RespBulkEditForm
@@ -10,6 +12,10 @@ from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainFor
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
 from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable
+
+from django_tables2 import RequestConfig
+
+
 # Create your views here.
 # =======================Registros========================================
 class RegisterListView(PermissionRequiredMixin, generic.ObjectListView):
@@ -100,7 +106,7 @@ class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
 
 class DomainView(PermissionRequiredMixin, generic.ObjectView):
     """Single virtual circuits view, identified by ID."""
-    permission_required = 'plugins.sdns.add_domain'
+    permission_required = 'sdns.add_domain'
     queryset = Domain.objects.all()
 
 
@@ -108,18 +114,34 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
         #Domains suport information
         owner_dom = Resp.objects.filter(dom=instance, tipo='D').order_by('name').first()
         owner_tec = Resp.objects.filter(dom=instance, tipo='T').order_by('name').first()
+
         #Ns information
         records_ns = Ns.objects.filter(dom=instance).prefetch_related('ns','dom')
         Ns_table = NsTable(records_ns, orderable=False)
+
         #Mx information
         records_mx = Mx.objects.filter(dom=instance).prefetch_related('mx','dom')
         Mx_table = MxTable(records_mx, orderable=False)
+
+        # Address records informations
+        records_ip = Register.objects.filter(domain=instance).prefetch_related('ip','domain')
+        Ip_table = RegisterTable(records_ip, orderable=False)
+
+        # paginate = {
+        #     'paginator_class': EnhancedPaginator,
+        #     'per_page': get_paginate_count(request)
+        # }
+        
+        # RequestConfig(request, paginate).configure(Ip_table)
+
 
         return {
             'owner_dom': owner_dom,
             'owner_tec': owner_tec,
             'Mx_table': Mx_table,
             'Ns_table': Ns_table,
+            'Ip_table': Ip_table,
+
         }
 
 
@@ -129,7 +151,7 @@ class DomainEditView(DomainCreateView):
 
 class DomainDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_domain'
-    model = Domain
+    queryset = Domain.objects.all()
     default_return_url = 'plugins:sdns:domain_list'
 
 #
@@ -235,7 +257,6 @@ class NsListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = NsFilter
     filterset_form = NsFilterForm
     table = NsTable
-    action_buttons = ('export')
     template_name = 'sdns/ns_list.html'
 
 class NsCreateView(PermissionRequiredMixin, generic.ObjectEditView):

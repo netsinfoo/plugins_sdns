@@ -22,8 +22,8 @@ class Resp(models.Model):
 
     def get_absolute_url(self):
         return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
-    
-    
+
+
     csv_headers = ['name','tipo','dom']
 
     def to_csv(self):
@@ -58,9 +58,11 @@ class Domain(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('plugins:sdns:domain_edit', kwargs={"pk": self.pk})
+        return reverse('plugins:sdns:domain', args={self.pk})
 
     csv_headers = ['owner', 'name', 'date_joined']
+
+    clone_fields = ['owner', 'date_joined']
 
     def to_csv(self):
         return (

@@ -29,7 +29,7 @@ class MxSerializer(ModelSerializer):
     
     class Meta:
         model = Mx
-        fields = ('dom', 'Mx', 'prior')
+        fields = ('dom', 'mx', 'prior')
 
 class CtsSerializer(ModelSerializer):
     

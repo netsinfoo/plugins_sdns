@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'sdns'
+app_name = 'plugins.sdns'
 urlpatterns = [
    path('', views.RegisterView.as_view(), name='sdns-api') ,
    # ====================Registros======================================

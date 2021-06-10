@@ -16,6 +16,7 @@ sdns/views.py
 sdns.egg-info/PKG-INFO
 sdns.egg-info/SOURCES.txt
 sdns.egg-info/dependency_links.txt
+sdns.egg-info/not-zip-safe
 sdns.egg-info/top_level.txt
 sdns/__pycache__/__init__.cpython-37.pyc
 sdns/__pycache__/__init__.cpython-38.pyc
@@ -68,4 +69,5 @@ sdns/templates/sdns/ns_list.html
 sdns/templates/sdns/register.html
 sdns/templates/sdns/register_list.html
 sdns/templates/sdns/resp.html
+sdns/templates/sdns/resp_bulk_edit.html
 sdns/templates/sdns/resp_list.html
