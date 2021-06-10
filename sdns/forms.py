@@ -68,6 +68,7 @@ class DomainForm(BootstrapMixin, forms.ModelForm):
             'name',
             'date_joined',
             'owner',
+            'domParent',
         ]
 
 class DomainFilterForm(BootstrapMixin, forms.ModelForm):

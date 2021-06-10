@@ -50,6 +50,11 @@ class Domain(models.Model):
     owner = models.CharField(max_length=1, choices=OWN, null=True)
     name = models.CharField(max_length=30, unique=True)
     date_joined = models.DateField()
+    domParent = models.ForeignKey('Domain',
+                            models.SET_NULL,
+                            blank=True,
+                            null=True,
+                            related_name='domParet')
 
     # def get_absolute_url(self):
     #     return reverse("domain_update", kwargs={"pk": self.pk})
@@ -60,7 +65,7 @@ class Domain(models.Model):
     def get_absolute_url(self):
         return reverse('plugins:sdns:domain', args={self.pk})
 
-    csv_headers = ['owner', 'name', 'date_joined']
+    csv_headers = ['owner', 'name', 'date_joined', 'domParent']
 
     clone_fields = ['owner', 'date_joined']
 
@@ -69,6 +74,7 @@ class Domain(models.Model):
             self.owner,
             self.name,
             self.date_joined,
+            self.domParent
         )
 
 

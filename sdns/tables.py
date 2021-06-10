@@ -37,6 +37,7 @@ class DomainTable(BaseTable):
             'name',
             'date_joined',
             'owner',
+            'domParent',
         )
 
 # ============ Resp ==========================

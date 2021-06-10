@@ -11,7 +11,7 @@ class DomainSerializer(ModelSerializer):
     
     class Meta:
         model = Domain
-        fields = ('owner', 'name', 'date_joined')
+        fields = ('owner', 'name', 'date_joined', 'domParent')
 
 class RespSerializer(ModelSerializer):
     
