@@ -90,7 +90,7 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
     """Single virtual circuits view, identified by ID."""
     permission_required = 'sdns.add_domain'
     queryset = Domain.objects.all()
-    template_name = 'sdns/domain.html'
+   
 
 
     def get_extra_context(self, request, instance):
