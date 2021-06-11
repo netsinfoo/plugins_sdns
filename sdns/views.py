@@ -11,7 +11,7 @@ from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainFor
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
-from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable
+from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable
 
 from django_tables2 import RequestConfig
 
@@ -100,15 +100,15 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
 
         #Ns information
         records_ns = Ns.objects.filter(dom=instance).prefetch_related('ns','dom')
-        Ns_table = NsTable(records_ns, orderable=False)
+        Ns_table = NsdTable(records_ns, orderable=False)
 
         #Mx information
         records_mx = Mx.objects.filter(dom=instance).prefetch_related('mx','dom')
-        Mx_table = MxTable(records_mx, orderable=False)
+        Mx_table = MxdTable(records_mx, orderable=False)
 
         # Address records informations
         records_ip = Register.objects.filter(domain=instance).prefetch_related('ip','domain')
-        Ip_table = RegisterTable(records_ip, orderable=False)
+        Ip_table = RegisterdTable(records_ip, orderable=False)
 
         # Domains children
         domc=Domain.objects.filter(domParent=instance)

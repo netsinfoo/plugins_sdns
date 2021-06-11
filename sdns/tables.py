@@ -24,6 +24,21 @@ class RegisterTable(BaseTable):
             'domain',
         )
 
+class RegisterdTable(BaseTable):
+    pk = ToggleColumn()
+    ip = tables.LinkColumn(
+        viewname='plugins:sdns:register_edit',
+        args=[Accessor('pk')]
+    )    
+   
+    class Meta(BaseTable.Meta):
+        model = Register
+        fields = (
+            'pk',
+            'ip',
+            'host',
+        )
+
 # ============ DOMAIN ==========================
 
 class DomainTable(BaseTable):
@@ -95,6 +110,24 @@ class NsTable(BaseTable):
             'dom',
         )
 
+
+class NsdTable(BaseTable):
+    pk = ToggleColumn()
+    ns = tables.LinkColumn(
+        viewname='plugins:sdns:ns_edit',
+        args=[Accessor('pk')]
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Ns
+        fields = (
+            'pk',
+            'ns',
+            'tipo',
+        )
+
+
+
 # ============ Mx ==========================
 
 class MxTable(BaseTable):
@@ -111,6 +144,22 @@ class MxTable(BaseTable):
             'mx',
             'prior',
             'dom',
+        )
+
+
+class MxdTable(BaseTable):
+    pk = ToggleColumn()
+    mx = tables.LinkColumn(
+        viewname='plugins:sdns:mx_edit',
+        args=[Accessor('pk')]
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Mx
+        fields = (
+            'pk',
+            'mx',
+            'prior',
         )
 
 # ============ Cts ==========================
