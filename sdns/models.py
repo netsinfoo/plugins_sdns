@@ -10,7 +10,7 @@ class Resp(models.Model):
         ('T', 'TECNICO'),
     ]
 
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
     tipo = models.CharField(max_length=1, choices=TIPO, null=True)
     dom =  models.ForeignKey('Domain', models.SET_NULL, blank= True, null=True, related_name='use_domain')
 
@@ -39,15 +39,29 @@ class Domain(models.Model):
 
 
     OWN = [
-        ('D', 'DIRETOR'),
-        ('C', 'COODENADOR'),
-        ('S', 'SECRETARIO'),
-        ('U', 'SUPERINTENDENTE'),
+        ('AG', 'AUDITOR GERAL'),
+        ('Ag', 'AUDIROT GERAL ADJUNTO'),
+        ('C',  'COODENADOR'),
+        ('D',  'DIRETOR'),
+        ('DA', 'DIRETOR ADJUNTO'),
+        ('DC', 'DIRETOR DE CENTRO'),
+        ('O',  'OUVIDOR'),
+        ('OA', 'OUVIDOR ADJUNTO'),
+        ('PR', 'PRO-REITOR'),
+        ('Pr', 'PRO-REITOR ADJUNTO'),
+        ('R',  'REITOR'),
+        ('S',  'SECRETARIO'),
+        ('SA', 'SECRETARIO ADJUNTO'),
+        ('U',  'SUPERINTENDENTE'),
+        ('UA', 'SUPERINTENDENTE ADJUNTO'),
+        ('VD', 'VICE DIRETOR'),
+        ('VC', 'VICE DIRETOR DE CENTRO'),
+        ('VR', 'VICE-REITOR'),
     ]
 
 
     # resp = models.ForeignKey('Resp', models.SET_NULL, blank= True, null=True, related_name='resp')
-    owner = models.CharField(max_length=1, choices=OWN, null=True)
+    owner = models.CharField(max_length=2, choices=OWN, null=True)
     name = models.CharField(max_length=30, unique=True)
     date_joined = models.DateField()
     domParent = models.ForeignKey('Domain',

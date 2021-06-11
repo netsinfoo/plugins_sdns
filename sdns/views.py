@@ -11,7 +11,7 @@ from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainFor
 
 from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
-from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable
+from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable
 
 from django_tables2 import RequestConfig
 
@@ -86,28 +86,11 @@ class RegisterBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     default_return_url = 'plugins:sdns:register_list'
 
 # ===========================Domain==========================================
-
-class DomainListView(PermissionRequiredMixin, generic.ObjectListView):
-    permission_required = 'sdns.view_domain'
-    queryset = Domain.objects.all()
-    filterset = DomainFilter
-    filterset_form = DomainFilterForm
-    table = DomainTable
-    template_name = 'sdns/domain_list.html'
-
-class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
-    permission_required = 'sdns.add_domain'
-    model = Domain
-    queryset = Domain.objects.all()
-    model_form =  DomainForm
-    #template_name = 'sdns/domain_edit.html'
-    default_return_url = 'plugins:sdns:domain_list'
-
-
 class DomainView(PermissionRequiredMixin, generic.ObjectView):
     """Single virtual circuits view, identified by ID."""
     permission_required = 'sdns.add_domain'
     queryset = Domain.objects.all()
+    template_name = 'sdns/domain.html'
 
 
     def get_extra_context(self, request, instance):
@@ -127,6 +110,10 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
         records_ip = Register.objects.filter(domain=instance).prefetch_related('ip','domain')
         Ip_table = RegisterTable(records_ip, orderable=False)
 
+        # Domains children
+        domc=Domain.objects.filter(domParent=instance)
+        Domc_table = DomcTable(domc, orderable=False)
+
         # paginate = {
         #     'paginator_class': EnhancedPaginator,
         #     'per_page': get_paginate_count(request)
@@ -141,9 +128,24 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
             'Mx_table': Mx_table,
             'Ns_table': Ns_table,
             'Ip_table': Ip_table,
-
+            'Domc_table': Domc_table,
         }
 
+class DomainListView(PermissionRequiredMixin, generic.ObjectListView):
+    permission_required = 'sdns.view_domain'
+    queryset = Domain.objects.all()
+    filterset = DomainFilter
+    filterset_form = DomainFilterForm
+    table = DomainTable
+    template_name = 'sdns/domain_list.html'
+
+class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
+    permission_required = 'sdns.add_domain'
+    model = Domain
+    queryset = Domain.objects.all()
+    model_form =  DomainForm
+    #template_name = 'sdns/domain_edit.html'
+    default_return_url = 'plugins:sdns:domain_list'
 
 
 class DomainEditView(DomainCreateView):
@@ -182,24 +184,6 @@ class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
 
 
 # ===========================Resposáveis==========================================
-
-class RespListView(PermissionRequiredMixin, generic.ObjectListView):
-    permission_required = 'sdns.add_resp'
-    queryset = Resp.objects.all()
-    filterset = RespFilter
-    filterset_form = RespFilterForm
-    table = RespTable
-    template_name = 'sdns/resp_list.html'
-
-class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
-    permission_required = 'sdns.add_resp'
-    queryset = Resp.objects.all()
-    model_form =  RespForm
-    default_return_url = 'plugins:sdns:resp_list'
-
-class RespEditView(RespCreateView):
-    permission_required = 'sdns.change_sdns'
-
 class RespView(View):
     """Single virtual circuits view, identified by ID."""
 
@@ -213,7 +197,24 @@ class RespView(View):
             'vlans': vlans,
         })
 
+class RespListView(PermissionRequiredMixin, generic.ObjectListView):
+    permission_required = 'sdns.add_resp'
+    queryset = Resp.objects.all()
+    filterset = RespFilter
+    filterset_form = RespFilterForm
+    table = RespTable
+    template_name = 'sdns/resp_list.html'
 
+class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
+    permission_required = 'sdns.add_resp'
+    model = Resp
+    queryset = Resp.objects.all()
+    model_form =  RespForm
+    default_return_url = 'plugins:sdns:resp_list'
+
+class RespEditView(RespCreateView):
+    permission_required = 'sdns.change_sdns'
+   
 class RespDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_resp'
     queryset = Resp.objects.all()

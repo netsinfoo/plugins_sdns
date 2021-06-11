@@ -11,7 +11,10 @@ class RegisterTable(BaseTable):
         viewname='plugins:sdns:register_edit',
         args=[Accessor('pk')]
     )
-
+    domain = tables.LinkColumn(
+        viewname='plugins:sdns:domain',
+        args=[Accessor('pk')]
+    )
     class Meta(BaseTable.Meta):
         model = Register
         fields = (
@@ -39,6 +42,22 @@ class DomainTable(BaseTable):
             'owner',
             'domParent',
         )
+
+class DomcTable(BaseTable):
+    pk = ToggleColumn()
+    name = tables.LinkColumn(
+        viewname='plugins:sdns:domain',
+        args=[Accessor('pk')]
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Domain
+        fields = (
+            'pk',
+            'name',
+        )
+
+
 
 # ============ Resp ==========================
 
