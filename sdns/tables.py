@@ -181,6 +181,19 @@ class CtsTable(BaseTable):
         )
 
 
+class CtscTable(BaseTable):
+    pk = ToggleColumn()
+    content = tables.LinkColumn(
+        viewname='plugins:sdns:cts',
+        args=[Accessor('pk')]
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Cts
+        fields = (
+            'pk',
+            'content',
+        )
 # ============ DomainServ ==========================
 
 class DomainServTable(BaseTable):

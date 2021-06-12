@@ -9,15 +9,76 @@ from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilte
 
 from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm, RespBulkEditForm
 
-from .models import  Register, Domain, Resp, Ns, Mx, Cts, DomainServ
+from .models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ,  IPAddress
 
-from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable
+
+from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable, CtscTable
 
 from django_tables2 import RequestConfig
 
 
 # Create your views here.
 # =======================Registros========================================
+class RegisterView(PermissionRequiredMixin, generic.ObjectView):
+    """Single virtual circuits view, identified by ID."""
+    permission_required = 'sdns.add_register'
+    queryset = Register.objects.all()
+
+    def get_extra_context(self, request, instance):
+        #Registros A/AAAA
+        reg_A  = Register.objects.get(pk=1).ip
+
+        #Registros CNAME
+        regcname = Cts.objects.filter(registro=522, reg=1)
+        regctable = CtscTable(regcname, orderable=False)
+
+        #Registros CNAME
+        regtxt = Cts.objects.filter(registro=522, reg=2)
+        regttable = CtscTable(regtxt, orderable=False)
+
+        regspf = Cts.objects.filter(registro=522, reg=3)
+        regstable = CtscTable(regspf, orderable=False)
+
+    #     #Ns information
+    #     records_ns = Ns.objects.filter(
+    #         dom=instance).prefetch_related('ns', 'dom')
+    #     Ns_table = NsdTable(records_ns, orderable=False)
+
+    #     #Mx information
+    #     records_mx = Mx.objects.filter(
+    #         dom=instance).prefetch_related('mx', 'dom')
+    #     Mx_table = MxdTable(records_mx, orderable=False)
+
+    #     # Address records informations
+    #     records_ip = Register.objects.filter(
+    #         domain=instance).prefetch_related('ip', 'domain')
+    #     Ip_table = RegisterdTable(records_ip, orderable=False)
+
+    #     # Domains children
+    #     domc = Domain.objects.filter(domParent=instance)
+    #     Domc_table = DomcTable(domc, orderable=False)
+
+    #     # paginate = {
+    #     #     'paginator_class': EnhancedPaginator,
+    #     #     'per_page': get_paginate_count(request)
+    #     # }
+
+    #     # RequestConfig(request, paginate).configure(Ip_table)
+
+        return {
+             'reg_A' : reg_A,
+             'regctable': regctable,
+             'regttable': regttable,
+             'regstable': regstable
+    #         'owner_tec': owner_tec,
+    #         'Mx_table': Mx_table,
+    #         'Ns_table': Ns_table,
+    #         'Ip_table': Ip_table,
+    #         'Domc_table': Domc_table,
+         }
+
+
+        
 class RegisterListView(PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'sdns.view_register'
     queryset = Register.objects.all()
@@ -35,19 +96,7 @@ class RegisterCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     default_return_url = 'plugins:sdns:register_list'
 
 
-class RegisterView(View):
-    """Single virtual circuits view, identified by ID."""
 
-    template_name = 'sdns/resp_list.html'
-    def get(self, request, pk):
-        vc = get_object_or_404(VirtualCircuit.objects.filter(vcid=pk))
-        vlan_ids = VirtualCircuitVLAN.objects.filter(virtual_circuit=vc).values_list('vlan_id', flat=True)
-        vlans = [VLAN.objects.get(pk=vid) for vid in vlan_ids]
-
-        return render(request, 'netbox_virtual_circuit_plugin/virtual_circuit.html', {
-            'virtual_circuit': vc,
-            'vlans': vlans,
-        })
 
 class RegisterEditView(RegisterCreateView):
     permission_required = 'sdns.change_sdns'
