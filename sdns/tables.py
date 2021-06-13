@@ -184,7 +184,7 @@ class CtsTable(BaseTable):
 class CtscTable(BaseTable):
     pk = ToggleColumn()
     content = tables.LinkColumn(
-        viewname='plugins:sdns:cts',
+        viewname='plugins:sdns:cts_edit',
         args=[Accessor('pk')]
     )
 

@@ -26,9 +26,10 @@ class RegisterView(PermissionRequiredMixin, generic.ObjectView):
 
     def get_extra_context(self, request, instance):
         #Registros A/AAAA
-        reg_A  = Register.objects.get(pk=1).ip
-
+        
+        reg_A = Register.objects.get(host=str(instance).split(".")[0]).ip        
         #Registros CNAME
+        ip_host = str(reg_A).split("/")[0]
         regcname = Cts.objects.filter(registro=522, reg=1)
         regctable = CtscTable(regcname, orderable=False)
 
@@ -49,17 +50,11 @@ class RegisterView(PermissionRequiredMixin, generic.ObjectView):
     #         dom=instance).prefetch_related('mx', 'dom')
     #     Mx_table = MxdTable(records_mx, orderable=False)
 
+
     #     # Address records informations
     #     records_ip = Register.objects.filter(
     #         domain=instance).prefetch_related('ip', 'domain')
-    #     Ip_table = RegisterdTable(records_ip, orderable=False)
-
-    #     # Domains children
-    #     domc = Domain.objects.filter(domParent=instance)
-    #     Domc_table = DomcTable(domc, orderable=False)
-
-    #     # paginate = {
-    #     #     'paginator_class': EnhancedPaginator,
+    #     Ip_table = RegisterdTable(records_ip, orderable=False)RegisterView.get_extra_context("sdns.views.RegisterView object at 0x7fa8dbf6ebb0", "WSGIRequest: GET '/plugins/sdns/register/7/'", "'pk': 7", '1')nator,
     #     #     'per_page': get_paginate_count(request)
     #     # }
 
@@ -69,7 +64,8 @@ class RegisterView(PermissionRequiredMixin, generic.ObjectView):
              'reg_A' : reg_A,
              'regctable': regctable,
              'regttable': regttable,
-             'regstable': regstable
+             'regstable': regstable, 
+             'instance': instance,
     #         'owner_tec': owner_tec,
     #         'Mx_table': Mx_table,
     #         'Ns_table': Ns_table,
