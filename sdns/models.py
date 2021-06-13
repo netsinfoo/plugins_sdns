@@ -180,7 +180,8 @@ class Register(models.Model):
     def __str__(self):
         return self.host +"."+ str(self.domain)
 
-
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:register', args={self.pk})
 
     csv_headers = ['domain', 'host', 'reg', 'ip']
 
