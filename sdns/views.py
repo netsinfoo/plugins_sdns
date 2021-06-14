@@ -27,51 +27,28 @@ class RegisterView(PermissionRequiredMixin, generic.ObjectView):
     def get_extra_context(self, request, instance):
         #Registros A/AAAA
         
-        reg_A = Register.objects.get(host=str(instance).split(".")[0]).ip        
+        reg_A = Register.objects.get(host=str(instance).split(
+            ".")[0]).ip
+        cts_host = str(reg_A)
         #Registros CNAME
-        ip_host = str(reg_A).split("/")[0]
-        regcname = Cts.objects.filter(registro=522, reg=1)
+        #ip_host = str(reg_A).split("/")[0]
+
+        regcname = IPAddress.objects.get(address=cts_host).cts_set.filter(reg=1)
         regctable = CtscTable(regcname, orderable=False)
 
         #Registros CNAME
-        regtxt = Cts.objects.filter(registro=522, reg=2)
+        regtxt = IPAddress.objects.get(address=cts_host).cts_set.filter(reg=2)
         regttable = CtscTable(regtxt, orderable=False)
 
-        regspf = Cts.objects.filter(registro=522, reg=3)
+        regspf = IPAddress.objects.get(address=cts_host).cts_set.filter(reg=3)
         regstable = CtscTable(regspf, orderable=False)
-
-    #     #Ns information
-    #     records_ns = Ns.objects.filter(
-    #         dom=instance).prefetch_related('ns', 'dom')
-    #     Ns_table = NsdTable(records_ns, orderable=False)
-
-    #     #Mx information
-    #     records_mx = Mx.objects.filter(
-    #         dom=instance).prefetch_related('mx', 'dom')
-    #     Mx_table = MxdTable(records_mx, orderable=False)
-
-
-    #     # Address records informations
-    #     records_ip = Register.objects.filter(
-    #         domain=instance).prefetch_related('ip', 'domain')
-    #     Ip_table = RegisterdTable(records_ip, orderable=False)RegisterView.get_extra_context("sdns.views.RegisterView object at 0x7fa8dbf6ebb0", "WSGIRequest: GET '/plugins/sdns/register/7/'", "'pk': 7", '1')nator,
-    #     #     'per_page': get_paginate_count(request)
-    #     # }
-
-    #     # RequestConfig(request, paginate).configure(Ip_table)
-
+   
         return {
              'reg_A' : reg_A,
              'regctable': regctable,
              'regttable': regttable,
              'regstable': regstable, 
-             'instance': instance,
-    #         'owner_tec': owner_tec,
-    #         'Mx_table': Mx_table,
-    #         'Ns_table': Ns_table,
-    #         'Ip_table': Ip_table,
-    #         'Domc_table': Domc_table,
-         }
+             }
 
 
         

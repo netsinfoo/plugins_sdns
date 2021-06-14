@@ -225,13 +225,6 @@ class Cts(models.Model):
         )
 
 
-# class Service(models.Model):
-#     nome = models.CharField(max_length=30)
-#     dispositivo = models.CharField(max_length=30, unique=True)
-
-#     def __str__(self):
-#         return self.dispositivo
-
 class DomainServ(models.Model):
     REL = [
         ('P', 'PRIMARIO'),
