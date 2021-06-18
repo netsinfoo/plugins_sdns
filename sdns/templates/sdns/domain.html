@@ -76,16 +76,16 @@
                 <strong>Dominio</strong>
             </div>
             <table class="table table-hover panel-body attr-table">
-                <tr>
+                {% comment %} <tr>
                 <td><strong>Institutional Unit</strong></td>
                    <td>
                         {% if object.vrf %}
                             <a href="{% url 'plugins:sdns:vrf' pk=object.vrf.pk %}">{{ object.vrf }}</a>
                         {% else %}
-                            <span> Registro A ></span>
+                            <span>< Registro A ></span>
                         {% endif %}
                     </td>
-                </tr>
+                </tr> {% endcomment %}
                 <tr>
                     <td><strong>Owner</strong></td>
                     <td><a href="{{ object.resp }}">{{ owner_dom }}</a></td>

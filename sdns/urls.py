@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'plugins.sdns'
+
 urlpatterns = [
-   path('', views.RegisterView.as_view(), name='sdns-api') ,
+   path('', views.RegisterView.as_view(), name='sdns') ,
    # ====================Registros======================================
    path('register/', views.RegisterListView.as_view(), name='register_list') ,
    path("register/add/", views.RegisterCreateView.as_view(), name='register_add'),

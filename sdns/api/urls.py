@@ -1,12 +1,11 @@
-from rest_framework import routers
-from netbox.api import OrderedDefaultRouter
+from rest_framework.routers import DefaultRouter
 from . import views
 from .views import *
 
+router = DefaultRouter()
+router.APIRootView = views.SdnsPluginRootView
 
-router = routers.DefaultRouter()
-router.APIRootView = views.SdnsRootView
-
+#==== REGISTROS
 router.register('registers', RegisterViewSet)
 router.register('resp', RespViewSet)
 router.register('domainserv', DomainServViewSet)
@@ -17,3 +16,4 @@ router.register('domain', DomainViewSet)
 
 app_name = 'sdns-api'
 urlpatterns = router.urls
+

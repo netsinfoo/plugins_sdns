@@ -8,7 +8,7 @@ from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 class RegisterTable(BaseTable):
     pk = ToggleColumn()
     ip = tables.LinkColumn(
-        viewname='plugins:sdns:register_edit',
+        viewname='plugins:sdns:register',
         args=[Accessor('pk')]
     )
     domain = tables.LinkColumn(

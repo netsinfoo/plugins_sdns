@@ -38,6 +38,7 @@ class RegisterFilterForm(BootstrapMixin, forms.ModelForm):
         ]
 
 
+#### TIPOS EXTRAS DE FORMS
 
 
 class RegisterCSVForm(CSVModelForm):
@@ -57,6 +58,27 @@ class RegisterCSVForm(CSVModelForm):
     class Meta:
         model = Register
         fields = Register.csv_headers
+
+
+class RegisterBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
+    pk = forms.ModelMultipleChoiceField(
+        queryset=Register.objects.all(),
+        widget=forms.MultipleHiddenInput()
+    )
+    domain = DynamicModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False
+    )
+    
+    host = forms.CharField(
+        max_length=30,
+        required=False
+    )
+
+    class Meta:
+        nullable_fields = [ ]
+
+        
 
 # ================= DOMAIN =====================
 
@@ -85,6 +107,7 @@ class DomainFilterForm(BootstrapMixin, forms.ModelForm):
             # 'owner',
         ]
 
+#### TIPOS EXTRAS DE FORMS
 
 class DomainCSVForm(CSVModelForm):
 
@@ -92,6 +115,25 @@ class DomainCSVForm(CSVModelForm):
     class Meta:
         model = Domain
         fields = Domain.csv_headers
+
+
+class DomainBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
+    pk = forms.ModelMultipleChoiceField(
+        queryset = Domain.objects.all(),
+        widget = forms.MultipleHiddenInput()
+    )
+    domParent = DynamicModelChoiceField(
+        queryset=Domain.objects.all(),
+        required=False
+    )
+
+    owner = forms.CharField(
+        max_length=2,
+        required=False
+    )
+
+    class Meta:
+        nullable_fields = []
 
 
 # ================= RESP =====================

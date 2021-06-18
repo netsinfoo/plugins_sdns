@@ -4,7 +4,7 @@ from .serializers import RegisterSerializer, DomainSerializer, RespSerializer, N
 from rest_framework.routers import APIRootView
 
 
-class SdnsRootView(APIRootView):
+class SdnsPluginRootView(APIRootView):
     """
     SDNS API root view
     """
