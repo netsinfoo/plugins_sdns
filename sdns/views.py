@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404, get_list_or_404, render
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from netbox.views import generic
+from .utils import *
 
 from utilities.paginator import EnhancedPaginator, get_paginate_count
 
@@ -201,18 +202,35 @@ class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
 
 
 # ===========================Resposáveis==========================================
-class RespView(View):
-    """Single virtual circuits view, identified by ID."""
+class RespView(PermissionRequiredMixin, generic.ObjectView):
+    """Utiliza os dados livres da UFRN para pegar informações sobre servidors"""
+    permission_required = 'sdns.view_resp'
+    queryset = Resp.objects.filter()
+    
+    def get_extra_context(self, request, instance):
+       nome = str(instance)
+       resp = get_user(nome)
+       resp_name = resp['nome-pessoa']
+       resp_email = resp['email']
+       unit = get_unit(str(resp['id-unidade']))
+       resp_unit = unit['nome-unidade']
+       sigla_unit = unit['sigla']
+       unit_parent = get_unit(str(unit['id-unidade-responsavel']))['nome-unidade']
+       resp_serv = get_server(resp_name)
+       
+       return {
+           'nome' : nome,
+           'resp_name' : resp_name,
+           'resp_unit' : resp_unit,
+           'resp_email' : resp_email,
+           'resp_serv'  : resp_serv,
+           'sigla_unit' : sigla_unit,
+           'unit_parent' : unit_parent,
+        }  
+       
 
-    def get(self, request, pk):
-        vc = get_object_or_404(VirtualCircuit.objects.filter(vcid=pk))
-        vlan_ids = VirtualCircuitVLAN.objects.filter(virtual_circuit=vc).values_list('vlan_id', flat=True)
-        vlans = [VLAN.objects.get(pk=vid) for vid in vlan_ids]
 
-        return render(request, 'netbox_virtual_circuit_plugin/virtual_circuit.html', {
-            'virtual_circuit': vc,
-            'vlans': vlans,
-        })
+    
 
 class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'sdns.add_resp'
