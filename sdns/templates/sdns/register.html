@@ -33,9 +33,10 @@
         {% plugin_buttons object %}
         {% if perms.sdns.add_register %}
         {% comment %} {% clone_button object %} {% endcomment %}
-        <a href="{{ url }}" class="btn btn-success">
-        <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Clone
+        <a href="javascript:history.back()" class="btn btn-secondary">
+        <span class="mdi mdi-undo-variant" aria-hidden="true"></span> Back
         </a>
+        
         {% endif %}
         {% if perms.sdns.change_register %}
         <a href={% url 'plugins:sdns:register_edit' pk=object.pk %} class="btn btn-warning">

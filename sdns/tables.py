@@ -92,6 +92,23 @@ class RespTable(BaseTable):
             'dom',
         )
 
+
+class RespDTable(BaseTable):
+    pk = ToggleColumn()
+    name = tables.LinkColumn(
+        viewname='plugins:sdns:resp',
+        args=[Accessor('pk')]
+    )
+
+    class Meta(BaseTable.Meta):
+        model = Resp
+        fields = (
+            'pk',
+            'name',
+            )
+
+
+
 # ============ Ns ==========================
 
 class NsTable(BaseTable):

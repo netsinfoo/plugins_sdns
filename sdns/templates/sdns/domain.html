@@ -31,11 +31,14 @@
     </div>
     <div class="pull-right noprint">
         {% plugin_buttons object %}
+        <a href="javascript:history.back()" class="btn btn-secondary">
+        <span class="mdi mdi-undo-variant" aria-hidden="true"></span> Back
+        </a>
+        <a href="{% url 'plugins:sdns:domain_list'%}" class="btn btn-info">
+        <span class="mdi mdi-view-list" aria-hidden="true"></span> List Domain
+        </a>
         {% if perms.sdns.add_domain %}
         {% comment %} {% clone_button object %} {% endcomment %}
-        <a href="{{ url }}" class="btn btn-success">
-        <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Clone
-        </a>
         {% endif %}
         {% if perms.sdns.change_domain %}
         <a href={% url 'plugins:sdns:domain_edit' pk=object.pk %} class="btn btn-warning">
@@ -69,6 +72,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="row">
 	<div class="col-md-4">
         <div class="panel panel-default">
@@ -76,25 +80,23 @@
                 <strong>Dominio</strong>
             </div>
             <table class="table table-hover panel-body attr-table">
-                {% comment %} <tr>
-                <td><strong>Institutional Unit</strong></td>
-                   <td>
-                        {% if object.vrf %}
-                            <a href="{% url 'plugins:sdns:vrf' pk=object.vrf.pk %}">{{ object.vrf }}</a>
-                        {% else %}
-                            <span>< Registro A ></span>
-                        {% endif %}
-                    </td>
-                </tr> {% endcomment %}
                 <tr>
                     <td><strong>Owner</strong></td>
-                    <td><a href="{{ object.resp }}">{{ owner_dom }}</a></td>
-                    
+                    {% if owner_dom.id is None  %}
+                    <td> Não possui Proprietário</td>
+                    {% else %}
+                    <td><a href="{% url 'plugins:sdns:resp' pk=owner_dom.id %}">{{ owner_dom }}</a></td>
+                    {% endif %}
                 </tr>
                 <tr>
                 <tr>
                     <td><strong>Tecnical Suport</strong></td>
-                    <td>{{ owner_tec }}</td>
+                    {% if owner_tec.id is None  %}
+                    <td> Não possui Técnico Responsável</td>
+                    {% else %}
+                    <td><a href="{% url 'plugins:sdns:resp' pk=owner_tec.id %}">{{ owner_tec }}</a></td>
+                    {% endif %}
+                    
                 </tr>
                 {% comment %} <tr>
                     <td>Tenant</td>

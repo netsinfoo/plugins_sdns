@@ -13,7 +13,7 @@ from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainFor
 from .models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ,  IPAddress
 
 
-from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable, CtscTable
+from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable, CtscTable, RespDTable
 
 from django_tables2 import RequestConfig
 
@@ -114,9 +114,13 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
 
 
     def get_extra_context(self, request, instance):
+        
         #Domains suport information
+        
         owner_dom = Resp.objects.filter(dom=instance, tipo='D').order_by('name').first()
+
         owner_tec = Resp.objects.filter(dom=instance, tipo='T').order_by('name').first()
+ 
 
         #Ns information
         records_ns = Ns.objects.filter(dom=instance).prefetch_related('ns','dom')
