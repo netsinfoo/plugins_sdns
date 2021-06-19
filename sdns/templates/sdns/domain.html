@@ -63,11 +63,11 @@
         <li role="presentation"{% if not active_tab %} class="active"{% endif %}>
             <a href="{{ object.get_absolute_url }}">Domain Details</a>
         </li>
-        {% if perms.extras.view_objectchange %}
+        {% comment %} {% if perms.extras.view_objectchange %} {% endcomment %}
             <li role="presentation"{% if active_tab == 'changelog' %} class="active"{% endif %}>
                 <a href="{% url 'plugins:sdns:domain_edit' pk=object.pk %}">Change Log</a>
             </li>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
     </ul>
 {% endblock %}
 

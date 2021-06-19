@@ -59,18 +59,14 @@ class RegisterListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = RegisterFilter
     filterset_form = RegisterFilterForm
     table = RegisterTable
+    #action_buttons = 'import', 'export'
     template_name = 'sdns/register_list.html'
 
-class RegisterCreateView(PermissionRequiredMixin, generic.ObjectEditView):
-    permission_required = 'sdns.add_register'
-    model = Register
-    queryset = Register.objects.all()
-    model_form =  RegisterForm
-    # template_name = 'sdns/register_edit.html'
-    default_return_url = 'plugins:sdns:register_list'
-
-class RegisterEditView(RegisterCreateView):
+class RegisterEditView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.change_sdns'
+    model_form = RegisterForm
+    queryset = Register.objects.all()
+    default_return_url = 'plugins:sdns:register_list'
     
 class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_register'

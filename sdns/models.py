@@ -21,7 +21,7 @@ class Resp(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('plugins:sdns:resp_edit', kwargs={"pk": self.pk})
+        return reverse('plugins:sdns:resp_edit', kwargs=[self.pk])
 
 
     csv_headers = ['name','tipo','dom']
@@ -77,7 +77,7 @@ class Domain(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('plugins:sdns:domain', args={self.pk})
+        return reverse('plugins:sdns:domain', args=[self.pk])
 
     csv_headers = ['owner', 'name', 'date_joined', 'domParent']
 
@@ -181,7 +181,7 @@ class Register(models.Model):
         return self.host +"."+ str(self.domain)
 
     def get_absolute_url(self):
-        return reverse('plugins:sdns:register', args={self.pk})
+        return reverse('plugins:sdns:register', args=[self.pk])
 
     csv_headers = ['domain', 'host', 'reg', 'ip']
 

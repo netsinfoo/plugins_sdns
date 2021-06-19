@@ -61,11 +61,11 @@
         <li role="presentation"{% if not active_tab %} class="active"{% endif %}>
             <a href="{{ object.get_absolute_url }}"> Register Details  </a>
         </li>
-        {% if perms.extras.view_objectchange %}
+        {% comment %} {% if perms.extras.view_objectchange %} {% endcomment %}
             <li role="presentation"{% if active_tab == 'changelog' %} class="active"{% endif %}>
-                <a href="{% url 'plugins:sdns:register_edit' pk=object.pk %}">Change Log</a>
+                <a href="{% url 'plugins:sdns:register_changelog' pk=object.pk %}">Change Log</a>
             </li>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
     </ul>
 {% endblock %}
 
