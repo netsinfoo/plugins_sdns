@@ -1,6 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
 from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 from .serializers import RegisterSerializer, DomainSerializer, RespSerializer, NsSerializer, MxSerializer, CtsSerializer, DomainServSerializer
+from rest_framework.routers import APIRootView
+
+
+class SdnsPluginRootView(APIRootView):
+    """
+    SDNS API root view
+    """
+    def get_view_name(self):
+        return 'Sdns'
+
 
 class RegisterViewSet(ModelViewSet):
     queryset = Register.objects.all()

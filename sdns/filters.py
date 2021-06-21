@@ -1,12 +1,12 @@
 import django_filters
 from django.db.models import Q
 
-from utilities.filters import NameSlugSearchFilterSet, BaseFilterSet
+from netbox.filtersets import BaseFilterSet
 
 from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
 
-class RegisterFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class RegisterFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -70,7 +70,7 @@ class RegisterFilter(BaseFilterSet,NameSlugSearchFilterSet):
 
 # ============= DOMAIN ==========================
 
-class DomainFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class DomainFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -121,7 +121,7 @@ class DomainFilter(BaseFilterSet,NameSlugSearchFilterSet):
 
 # ============= Resp ==========================
 
-class RespFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class RespFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -178,7 +178,7 @@ class RespFilter(BaseFilterSet,NameSlugSearchFilterSet):
             
 # ============= Ns ==========================
 
-class NsFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class NsFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -241,7 +241,7 @@ class NsFilter(BaseFilterSet,NameSlugSearchFilterSet):
 
 # ============= Mx ==========================
 
-class MxFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class MxFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -304,7 +304,7 @@ class MxFilter(BaseFilterSet,NameSlugSearchFilterSet):
 
 # ============= Cts ==========================
 
-class CtsFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class CtsFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",
@@ -361,7 +361,7 @@ class CtsFilter(BaseFilterSet,NameSlugSearchFilterSet):
 
 # =============DomainServ ==========================
 
-class DomainServFilter(BaseFilterSet,NameSlugSearchFilterSet):
+class DomainServFilter(BaseFilterSet):
     q = django_filters.CharFilter(
         method="search",
         label="Search",

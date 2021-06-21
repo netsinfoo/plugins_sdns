@@ -10,7 +10,7 @@ class Resp(models.Model):
         ('T', 'TECNICO'),
     ]
 
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
     tipo = models.CharField(max_length=1, choices=TIPO, null=True)
     dom =  models.ForeignKey('Domain', models.SET_NULL, blank= True, null=True, related_name='use_domain')
 
@@ -21,29 +21,76 @@ class Resp(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("resp_update", kwargs={"pk": self.pk})
+        return reverse('plugins:sdns:resp_edit', kwargs=[self.pk])
+
+
+    csv_headers = ['name','tipo','dom']
+
+    def to_csv(self):
+        return(
+            self.name,
+            self.tipo,
+            self.dom,
+        )
+
+
 
 class Domain(models.Model):
 
 
     OWN = [
-        ('D', 'DIRETOR'),
-        ('C', 'COODENADOR'),
-        ('S', 'SECRETARIO'),
-        ('U', 'SUPERINTENDENTE'),
+        ('AG', 'AUDITOR GERAL'),
+        ('Ag', 'AUDIROT GERAL ADJUNTO'),
+        ('C',  'COODENADOR'),
+        ('D',  'DIRETOR'),
+        ('DA', 'DIRETOR ADJUNTO'),
+        ('DC', 'DIRETOR DE CENTRO'),
+        ('O',  'OUVIDOR'),
+        ('OA', 'OUVIDOR ADJUNTO'),
+        ('PR', 'PRO-REITOR'),
+        ('Pr', 'PRO-REITOR ADJUNTO'),
+        ('R',  'REITOR'),
+        ('S',  'SECRETARIO'),
+        ('SA', 'SECRETARIO ADJUNTO'),
+        ('U',  'SUPERINTENDENTE'),
+        ('UA', 'SUPERINTENDENTE ADJUNTO'),
+        ('VD', 'VICE DIRETOR'),
+        ('VC', 'VICE DIRETOR DE CENTRO'),
+        ('VR', 'VICE-REITOR'),
     ]
 
 
     # resp = models.ForeignKey('Resp', models.SET_NULL, blank= True, null=True, related_name='resp')
-    owner = models.CharField(max_length=1, choices=OWN, null=True)
+    owner = models.CharField(max_length=2, choices=OWN, null=True)
     name = models.CharField(max_length=30, unique=True)
     date_joined = models.DateField()
+    domParent = models.ForeignKey('Domain',
+                            models.SET_NULL,
+                            blank=True,
+                            null=True,
+                            related_name='domParet')
 
     # def get_absolute_url(self):
     #     return reverse("domain_update", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:domain', args=[self.pk])
+
+    csv_headers = ['owner', 'name', 'date_joined', 'domParent']
+
+    clone_fields = ['owner', 'date_joined']
+
+    def to_csv(self):
+        return (
+            self.owner,
+            self.name,
+            self.date_joined,
+            self.domParent
+        )
+
 
 class Ns(models.Model):
     TIPO = [('M' , 'Master'), ('S', 'Slave')]
@@ -66,6 +113,16 @@ class Ns(models.Model):
     def __str__(self):
         return self.tipo
 
+    csv_headers = ['ns', 'dom', 'tipo']
+
+    def to_csv(self):
+        return (
+            self.ns,
+            self.dom,
+            self.tipo,
+        )
+
+
 class Mx(models.Model):
     mx =  models.ForeignKey('ipam.IPAddress', models.SET_NULL, blank= True, null=True)
     # models.OneToOneField(
@@ -85,6 +142,16 @@ class Mx(models.Model):
 
     def __str__(self):
         return self.prior
+
+    csv_headers = ['mx', 'dom', 'prior']
+
+    def to_csv(self):
+        return (
+            self.mx,
+            self.dom,
+            self.prior,
+        )
+
 
 class Register(models.Model):
     REG= [
@@ -113,6 +180,20 @@ class Register(models.Model):
     def __str__(self):
         return self.host +"."+ str(self.domain)
 
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:register', args=[self.pk])
+
+    csv_headers = ['domain', 'host', 'reg', 'ip']
+
+    def to_csv(self):
+        return (
+            self.domain,
+            self.host,
+            self.reg,
+            self.ip,
+        )
+
+
 class Cts(models.Model):
 
     REGI= [
@@ -126,19 +207,23 @@ class Cts(models.Model):
     content  = models.CharField(max_length=30)
 
 
-    def get_absolute_url(self):
-        return reverse("cts_update", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("cts_update", kwargs={"pk": self.pk})
+    class Meta:
+        constraints = [ models.UniqueConstraint(fields=['registro', 'reg', 'content'], name='unique_Cts')]
 
     def __str__(self):
         return self.content
 
+    csv_headers = ['registro', 'reg', 'content']
 
-# class Service(models.Model):
-#     nome = models.CharField(max_length=30)
-#     dispositivo = models.CharField(max_length=30, unique=True)
+    def to_csv(self):
+        return (
+            self.registro,
+            self.reg,
+            self.content,
+        )
 
-#     def __str__(self):
-#         return self.dispositivo
 
 class DomainServ(models.Model):
     REL = [
@@ -151,3 +236,11 @@ class DomainServ(models.Model):
     dominio = models.ForeignKey('Domain',  on_delete=models.CASCADE)
     relation = models.CharField(max_length=1, choices=REL)
 
+    csv_headers = ['service', 'dominio', 'relation']
+
+    def to_csv(self):
+        return (
+            self.service,
+            self.dominio,
+            self.relation,
+        )

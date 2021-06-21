@@ -11,13 +11,13 @@
     {% endif %}
     
        
-        <a href="{% url 'plugins:sdns:resp_add' %}" class="btn btn-primary">
+        <a href="{% url 'plugins:sdns:<SUBSTITUA>_add' %}" class="btn btn-primary">
     <span class="mdi mdi-plus-thick" aria-hidden="true"></span> Add
 </a>
    
    
         
-        <a href="{% url 'plugins:sdns:resp_import' %}" class="btn btn-info">
+        <a href="{% url 'plugins:sdns:<SUBSTITUA>_import' %}" class="btn btn-info">
     <span class="mdi mdi-database-import" aria-hidden="true"></span> Import
 </a>
 
@@ -25,7 +25,7 @@
         {% export_button content_type %}
     
 </div>
-<h1>Domain Suport</h1>
+<h1>Registros</h1>
 <div class="row">
     <div class="col-md-12">
         {% if filter_form %}
@@ -34,8 +34,7 @@
                 {% block sidebar %}{% endblock %}
             </div>
         {% endif %}
-        {% comment %} {% with bulk_edit_url="content_type.model_class|validated_viewname":"bulk_edit" bulk_delete_url=content_type.model_class|validated_viewname:"bulk_delete" %} {% endcomment %}
-        
+               
             <form method="post" class="form form-horizontal">
                 {% csrf_token %}
                 <input type="hidden" name="return_url" value="{% if return_url %}{{ return_url }}{% else %}{{ request.path }}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" />
@@ -49,16 +48,16 @@
                                 </label>
                             </div>
                             <div class="pull-right">
-                                {% if bulk_edit_url and permissions.change %}
-                                    <button type="submit" name="_edit" formaction="{% url 'plugins:sdns:resp_bulk_edit' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-warning btn-sm" disabled="disabled">
+                                {% comment %} {% if bulk_edit_url and permissions.change %} {% endcomment %}
+                                    <button type="submit" name="_edit" formaction="{% url 'plugins:sdns:<SUBSTITUA>_bulk_edit' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-warning btn-sm" disabled="disabled">
                                         <span class="mdi mdi-pencil" aria-hidden="true"></span> Edit All
                                     </button>
-                                {% endif %}
-                                {% if bulk_delete_url and permissions.delete %}
-                                    <button type="submit" name="_delete" formaction="{% url 'plugins:sdns:resp_bulk_delete' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-danger btn-sm" disabled="disabled">
+                                {% comment %} {% endif %} {% endcomment %}
+                                {% comment %} {% if bulk_delete_url and permissions.delete %} {% endcomment %}
+                                    <button type="submit" name="_delete" formaction="{% url 'plugins:sdns:<SUBSTITUA>_bulk_delete' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-danger btn-sm" disabled="disabled">
                                         <span class="mdi mdi-trash-can-outline" aria-hidden="true"></span> Delete All
                                     </button>
-                                {% endif %}
+                                {% comment %} {% endif %} {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -67,12 +66,12 @@
                 <div class="pull-left noprint">
                     {% block bulk_buttons %}{% endblock %}
                     
-                        <button type="submit" name="_edit" formaction="{% url 'plugins:sdns:resp_bulk_edit' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-warning btn-sm">
+                        <button type="submit" name="_edit" formaction="{% url 'plugins:sdns:<SUBSTITUA>_bulk_edit' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-warning btn-sm">
                             <span class="mdi mdi-pencil" aria-hidden="true"></span> Edit Selected
                         </button>
                     
                     
-                        <button type="submit" name="_delete" formaction="{% url 'plugins:sdns:resp_bulk_delete' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-danger btn-sm">
+                        <button type="submit" name="_delete" formaction="{% url 'plugins:sdns:<SUBSTITUA>_bulk_delete' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-danger btn-sm">
                             <span class="mdi mdi-trash-can-outline" aria-hidden="true"></span> Delete Selected
                         </button>
                     
