@@ -90,7 +90,11 @@ class Domain(models.Model):
             self.date_joined,
             self.domParent
         )
-
+    class Meta:
+        db_table = 'nome da tabela'
+        managed = True
+        verbose_name = 'Registro'
+        verbose_name_plural = 'Registros'
 
 class Ns(models.Model):
     TIPO = [('M' , 'Master'), ('S', 'Slave')]
@@ -109,6 +113,7 @@ class Ns(models.Model):
 
     class Meta:
         constraints = [ models.UniqueConstraint(fields=['ns', 'dom'], name='unique_ns')]
+        verbose_name_plural = 'Registros de NameServers'
 
     def __str__(self):
         return self.tipo
@@ -139,6 +144,7 @@ class Mx(models.Model):
 
     class Meta:
         constraints = [ models.UniqueConstraint(fields=['mx', 'dom'], name='unique_,mx')]
+        verbose_name_plural = 'Registros de servidores de email'
 
     def __str__(self):
         return self.prior
@@ -211,6 +217,8 @@ class Cts(models.Model):
     #     return reverse("cts_update", kwargs={"pk": self.pk})
     class Meta:
         constraints = [ models.UniqueConstraint(fields=['registro', 'reg', 'content'], name='unique_Cts')]
+        verbose_name_plural = 'Registros CNAME, TXT, SPF'
+
 
     def __str__(self):
         return self.content
@@ -223,7 +231,7 @@ class Cts(models.Model):
             self.reg,
             self.content,
         )
-
+    
 
 class DomainServ(models.Model):
     REL = [

@@ -1,14 +1,37 @@
 from django import forms
 
-from extras.forms import AddRemoveTagsForm, CustomFieldBulkEditForm, CustomFieldModelCSVForm, CustomFieldModelForm, CustomFieldFilterForm
+from django.forms import IntegerField, ValidationError, widgets
+from django.conf import settings
 
-from utilities.forms import BootstrapMixin, CSVChoiceField, CSVModelChoiceField, CSVModelForm, add_blank_choice, DynamicModelChoiceField, StaticSelect2Multiple, StaticSelect2, APISelectMultiple, DynamicModelMultipleChoiceField, APISelect, BulkEditForm, form_from_model
+from extras.forms import (
+    CustomFieldModelForm,
+    CustomFieldModelCSVForm,
+    AddRemoveTagsForm,
+    CustomFieldModelBulkEditForm,
+    CustomFieldModelFilterForm,
+    CustomFieldBulkEditForm,
+)
+
+from utilities.forms import (
+    BootstrapMixin,
+    DynamicModelMultipleChoiceField,
+    TagFilterField,
+    StaticSelect,
+    CSVChoiceField,
+    CSVModelChoiceField,
+    DynamicModelChoiceField,
+    APISelect,
+    CSVModelForm,
+    StaticSelectMultiple,
+    add_blank_choice,
+)
 
 from sdns.models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ
 
 from ipam.models import IPAddress, Service
 
 from sdns.choices import *
+
 
 BLANK_CHOICE = (("", "---------"),)
 
@@ -60,23 +83,23 @@ class RegisterCSVForm(CSVModelForm):
         fields = Register.csv_headers
 
 
-class RegisterBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
-    pk = forms.ModelMultipleChoiceField(
-        queryset=Register.objects.all(),
-        widget=forms.MultipleHiddenInput()
-    )
-    domain = DynamicModelChoiceField(
-        queryset=Domain.objects.all(),
-        required=False
-    )
+# class RegisterBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
+#     pk = forms.ModelMultipleChoiceField(
+#         queryset=Register.objects.all(),
+#         widget=forms.MultipleHiddenInput()
+#     )
+#     domain = DynamicModelChoiceField(
+#         queryset=Domain.objects.all(),
+#         required=False
+#     )
     
-    host = forms.CharField(
-        max_length=30,
-        required=False
-    )
+#     host = forms.CharField(
+#         max_length=30,
+#         required=False
+#     )
 
-    class Meta:
-        nullable_fields = [ ]
+#     class Meta:
+#         nullable_fields = [ ]
 
         
 
@@ -117,23 +140,23 @@ class DomainCSVForm(CSVModelForm):
         fields = Domain.csv_headers
 
 
-class DomainBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
-    pk = forms.ModelMultipleChoiceField(
-        queryset = Domain.objects.all(),
-        widget = forms.MultipleHiddenInput()
-    )
-    domParent = DynamicModelChoiceField(
-        queryset=Domain.objects.all(),
-        required=False
-    )
+# class DomainBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
+#     pk = forms.ModelMultipleChoiceField(
+#         queryset = Domain.objects.all(),
+#         widget = forms.MultipleHiddenInput()
+#     )
+#     domParent = DynamicModelChoiceField(
+#         queryset=Domain.objects.all(),
+#         required=False
+#     )
 
-    owner = forms.CharField(
-        max_length=2,
-        required=False
-    )
+#     owner = forms.CharField(
+#         max_length=2,
+#         required=False
+#     )
 
-    class Meta:
-        nullable_fields = []
+#     class Meta:
+#         nullable_fields = []
 
 
 # ================= RESP =====================
@@ -166,31 +189,31 @@ class RespFilterForm(BootstrapMixin, forms.ModelForm):
 #=======================================================
 #               BULK
 #=======================================================
-class RespBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
-    pk = forms.ModelMultipleChoiceField(
-        queryset = Resp.objects.all(),
-        widget = forms.MultipleHiddenInput(
-        # api_url='/api/plugins/sdns/resp'
-        )
-    )
+# class RespBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditForm):
+#     pk = forms.ModelMultipleChoiceField(
+#         queryset = Resp.objects.all(),
+#         widget = forms.MultipleHiddenInput(
+#         # api_url='/api/plugins/sdns/resp'
+#         )
+#     )
 
-    tipo = forms.ChoiceField(
-        choices=add_blank_choice(RespChoices),
-        widget=StaticSelect2()
-    )
+#     tipo = forms.ChoiceField(
+#         choices=add_blank_choice(RespChoices),
+#         widget=StaticSelect2()
+#     )
 
-    dom = DynamicModelChoiceField(
-        queryset= Domain.objects.all(),
-        display_field='Domain',
-        label='Dominio',
-        required= False,
-        widget= APISelect(
-            api_url='/api/plugins/sdns/domain',
-        )
-    )
+#     dom = DynamicModelChoiceField(
+#         queryset= Domain.objects.all(),
+#         display_field='Domain',
+#         label='Dominio',
+#         required= False,
+#         widget= APISelect(
+#             api_url='/api/plugins/sdns/domain',
+#         )
+#     )
 
-    class Meta:
-        nullable_fields = [ ]
+#     class Meta:
+#         nullable_fields = [ ]
 
 
 class RespCSVForm(CSVModelForm):

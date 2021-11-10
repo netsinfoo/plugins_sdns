@@ -6,14 +6,66 @@ from .utils import *
 
 from utilities.paginator import EnhancedPaginator, get_paginate_count
 
-from .filters import RegisterFilter, DomainFilter, RespFilter, NsFilter, MxFilter, CtsFilter, DomainServFilter
+from .filters import (
+    RegisterFilter, 
+    DomainFilter, 
+    RespFilter, 
+    NsFilter, 
+    MxFilter, 
+    CtsFilter, 
+    DomainServFilter,
+    )
 
-from .forms import RegisterFilterForm, RegisterForm, DomainFilterForm, DomainForm, RespFilterForm, RespForm, NsFilterForm, NsForm, MxFilterForm, MxForm, CtsFilterForm, CtsForm, DomainServFilterForm, DomainServForm, RespCSVForm, RegisterCSVForm, DomainCSVForm, NsCSVForm, MxCSVForm, CtsCSVForm, DomainServCSVForm, RespBulkEditForm, RegisterBulkEditForm, DomainBulkEditForm
+from .forms import (
+    RegisterFilterForm, 
+    RegisterForm, 
+    DomainFilterForm, 
+    DomainForm, 
+    RespFilterForm, 
+    RespForm, 
+    NsFilterForm, 
+    NsForm, 
+    MxFilterForm, 
+    MxForm, 
+    CtsFilterForm, 
+    CtsForm, 
+    DomainServFilterForm, 
+    DomainServForm, 
+    RespCSVForm, 
+    RegisterCSVForm, 
+    DomainCSVForm, 
+    NsCSVForm, 
+    MxCSVForm, 
+    CtsCSVForm, 
+    DomainServCSVForm,
+    )
 
-from .models import Register, Domain, Resp, Ns, Mx, Cts, DomainServ,  IPAddress
+from .models import (
+    Register, 
+    Domain, 
+    Resp, 
+    Ns, 
+    Mx, 
+    Cts, 
+    DomainServ,  
+    IPAddress,
+    )
 
-
-from .tables import RegisterTable, DomainTable, RespTable, NsTable, MxTable, CtsTable, DomainServTable, DomcTable, NsdTable, MxdTable, RegisterdTable, CtscTable, RespDTable
+from .tables import (
+    RegisterTable, 
+    DomainTable, 
+    RespTable, 
+    NsTable, 
+    MxTable, 
+    CtsTable, 
+    DomainServTable, 
+    DomcTable, 
+    NsdTable, 
+    MxdTable, 
+    RegisterdTable, 
+    CtscTable, 
+    RespDTable,
+ )
 
 from django_tables2 import RequestConfig
 
@@ -59,15 +111,15 @@ class RegisterListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = RegisterFilter
     filterset_form = RegisterFilterForm
     table = RegisterTable
-    #action_buttons = 'import', 'export'
-    template_name = 'sdns/register_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/register_list.html'
 
 class RegisterEditView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.change_sdns'
     model_form = RegisterForm
     queryset = Register.objects.all()
     default_return_url = 'plugins:sdns:register_list'
-    
+     
 class RegisterDeleteView(PermissionRequiredMixin, generic.ObjectDeleteView):
     permission_required = 'sdns.delete_register'
     queryset = Register.objects.all()
@@ -85,13 +137,13 @@ class RegisterBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     default_return_url = 'plugins:sdns:register_list'
 
 
-class RegisterBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.change_register'
-    queryset = Register.objects.filter()
-    filterset = RegisterFilter
-    table = RegisterTable
-    form = RegisterBulkEditForm
-    default_return_url = 'plugins:sdns:register_list'
+# class RegisterBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.change_register'
+#     queryset = Register.objects.filter()
+#     filterset = RegisterFilter
+#     table = RegisterTable
+#     form = RegisterBulkEditForm
+#     default_return_url = 'plugins:sdns:register_list'
    
 
 class RegisterBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
@@ -106,7 +158,8 @@ class DomainView(PermissionRequiredMixin, generic.ObjectView):
     """Single virtual circuits view, identified by ID."""
     permission_required = 'sdns.add_domain'
     queryset = Domain.objects.all()
-   
+    action_buttons = 'export'
+    template_name = 'sdns/domain.html'
 
 
     def get_extra_context(self, request, instance):
@@ -157,7 +210,8 @@ class DomainListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = DomainFilter
     filterset_form = DomainFilterForm
     table = DomainTable
-    template_name = 'sdns/domain_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/domain_list.html'
 
 class DomainCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_domain'
@@ -186,13 +240,13 @@ class DomainBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     table = DomainTable
     default_return_url = 'plugins:sdns:domain_list'
 
-class DomainBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.change_domain'
-    queryset = Domain.objects.filter()
-    filterset = DomainFilter
-    table = DomainTable
-    form = DomainBulkEditForm
-    default_return_url = 'plugins:sdns:domain_list'
+# class DomainBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.change_domain'
+#     queryset = Domain.objects.filter()
+#     filterset = DomainFilter
+#     table = DomainTable
+#     form = DomainBulkEditForm
+#     default_return_url = 'plugins:sdns:domain_list'
 
 class DomainBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_domain'
@@ -206,6 +260,7 @@ class RespView(PermissionRequiredMixin, generic.ObjectView):
     """Utiliza os dados livres da UFRN para pegar informações sobre servidors"""
     permission_required = 'sdns.view_resp'
     queryset = Resp.objects.filter()
+    template_name = 'sdns/resp.html'
     
     def get_extra_context(self, request, instance):
        nome = str(instance)
@@ -228,17 +283,14 @@ class RespView(PermissionRequiredMixin, generic.ObjectView):
            'unit_parent' : unit_parent,
         }  
        
-
-
-    
-
 class RespListView(PermissionRequiredMixin, generic.ObjectListView):
     permission_required = 'sdns.add_resp'
     queryset = Resp.objects.all()
     filterset = RespFilter
     filterset_form = RespFilterForm
     table = RespTable
-    template_name = 'sdns/resp_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/resp_list.html'
 
 class RespCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_resp'
@@ -266,14 +318,14 @@ class RespBulkImportView(PermissionRequiredMixin,generic.BulkImportView):
     table = RespTable
     default_return_url = 'plugins:sdns:resp_list'
 
-class RespBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.add_resp'
-    queryset = Resp.objects.all()
-    filterset = RespFilter
-    table = RespTable
-    form = RespBulkEditForm
-    # template_name = 'sdns/resp_bulk_edit.html'
-    default_return_url = 'plugins:sdns:resp_list'
+# class RespBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.add_resp'
+#     queryset = Resp.objects.all()
+#     filterset = RespFilter
+#     table = RespTable
+#     form = RespBulkEditForm
+#     # template_name = 'sdns/resp_bulk_edit.html'
+#     default_return_url = 'plugins:sdns:resp_list'
 
 class RespBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_resp'
@@ -289,7 +341,8 @@ class NsListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = NsFilter
     filterset_form = NsFilterForm
     table = NsTable
-    template_name = 'sdns/ns_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/ns_list.html'
 
 class NsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_ns'
@@ -331,13 +384,13 @@ class NsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     table = NsTable
     default_return_url = 'plugins:sdns:ns_list'
 
-class NsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_resp'
-    queryset = Ns.objects.all()
-    filterset = NsFilter
-    table = NsTable
-    form = NsForm
-    default_return_url = 'plugins:sdns:ns_list'
+# class NsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.edit_resp'
+#     queryset = Ns.objects.all()
+#     filterset = NsFilter
+#     table = NsTable
+#     form = NsForm
+#     default_return_url = 'plugins:sdns:ns_list'
 
 class NsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_ns'
@@ -353,7 +406,8 @@ class MxListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = MxFilter
     filterset_form = MxFilterForm
     table = MxTable
-    template_name = 'sdns/mx_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/mx_list.html'
 
 class MxCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_mx'
@@ -395,13 +449,13 @@ class MxBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     table = MxTable
     default_return_url = 'plugins:sdns:mx_list'
 
-class MxBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_resp'
-    queryset = Mx.objects.all()
-    filterset = MxFilter
-    table = MxTable
-    form = MxForm
-    default_return_url = 'plugins:sdns:mx_list'
+# class MxBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.edit_resp'
+#     queryset = Mx.objects.all()
+#     filterset = MxFilter
+#     table = MxTable
+#     form = MxForm
+#     default_return_url = 'plugins:sdns:mx_list'
 
 class MxBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_mx'
@@ -416,7 +470,8 @@ class CtsListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = CtsFilter
     filterset_form = CtsFilterForm
     table = CtsTable
-    template_name = 'sdns/cts_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/cts_list.html'
 
 class CtsCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_cts'
@@ -458,13 +513,13 @@ class CtsBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     table = CtsTable
     default_return_url = 'plugins:sdns:Cts_list'
 
-class CtsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_resp'
-    queryset = Cts.objects.all()
-    filterset = CtsFilter
-    table = CtsTable
-    form = CtsForm
-    default_return_url = 'plugins:sdns:Cts_list'
+# class CtsBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.edit_resp'
+#     queryset = Cts.objects.all()
+#     filterset = CtsFilter
+#     table = CtsTable
+#     form = CtsForm
+#     default_return_url = 'plugins:sdns:Cts_list'
 
 class CtsBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_cts'
@@ -480,7 +535,8 @@ class DomainServListView(PermissionRequiredMixin, generic.ObjectListView):
     filterset = DomainServFilter
     filterset_form = DomainServFilterForm
     table = DomainServTable
-    template_name = 'sdns/domainserv_list.html'
+    action_buttons = 'export'
+    #template_name = 'sdns/domainserv_list.html'
 
 class DomainServCreateView(PermissionRequiredMixin, generic.ObjectEditView):
     permission_required = 'sdns.add_domainserv'
@@ -523,13 +579,13 @@ class DomainServBulkImportView(PermissionRequiredMixin, generic.BulkImportView):
     table = DomainServTable
     default_return_url = 'plugins:sdns:domainserv_list'
 
-class DomainServBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
-    permission_required = 'sdns.edit_resp'
-    queryset = DomainServ.objects.all()
-    filterset = DomainServFilter
-    table = DomainServTable
-    form = DomainServForm
-    default_return_url = 'plugins:sdns:domainserv_list'
+# class DomainServBulkEditView(PermissionRequiredMixin, generic.BulkEditView):
+#     permission_required = 'sdns.edit_resp'
+#     queryset = DomainServ.objects.all()
+#     filterset = DomainServFilter
+#     table = DomainServTable
+#     form = DomainServForm
+#     default_return_url = 'plugins:sdns:domainserv_list'
 
 class DomainServBulkDeleteView(PermissionRequiredMixin, generic.BulkDeleteView):
     permission_required = 'sdns.delete_domainserv'
