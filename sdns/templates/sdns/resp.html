@@ -9,7 +9,7 @@
     <div class="row noprint">
         <div class="col-sm-8 col-md-9">
             <ol class="breadcrumb">
-                <li><a href="{% url 'plugins:sdns:resp_list'%}" >Staff Information</a></li>
+                <li><a href="{% url 'plugins:sdns:resp_list'%}" >  Staff Information  </a></li>
                 {% if object.resp %}
                     <li><a href="{% url 'plugins:sdns:resp' pk=object.resp.pk %}">{{ object.resp }}</a></li>
                 {% endif %}
@@ -51,7 +51,7 @@
         
         {% endif %}
     </div>
-    <h1>{% block title %}{{ object }}{% endblock %}</h1>
+    <h1>{% block title %}{{ resp_name }}{% endblock %}</h1>
     {% comment %} {% include 'inc/created_updated.html' %} {% endcomment %}
     <div class="pull-right noprint">
         {% custom_links object %}

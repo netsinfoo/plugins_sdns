@@ -21,7 +21,7 @@ class Resp(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('plugins:sdns:resp_edit', kwargs=[self.pk])
+        return reverse('plugins:sdns:resp_edit', args=[self.pk])
 
 
     csv_headers = ['name','tipo','dom']
@@ -93,8 +93,8 @@ class Domain(models.Model):
     class Meta:
         db_table = 'nome da tabela'
         managed = True
-        verbose_name = 'Registro'
-        verbose_name_plural = 'Registros'
+        verbose_name = 'Dominio'
+        verbose_name_plural = 'Dominios - Realms'
 
 class Ns(models.Model):
     TIPO = [('M' , 'Master'), ('S', 'Slave')]
@@ -213,8 +213,9 @@ class Cts(models.Model):
     content  = models.CharField(max_length=30)
 
 
-    # def get_absolute_url(self):
-    #     return reverse("cts_update", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse('plugins:sdns:cts', args=[self.pk])
+    
     class Meta:
         constraints = [ models.UniqueConstraint(fields=['registro', 'reg', 'content'], name='unique_Cts')]
         verbose_name_plural = 'Registros CNAME, TXT, SPF'
