@@ -3,13 +3,18 @@ from extras.views import ObjectChangeLogView, ObjectJournalView
 from . import views
 from sdns.models import *
 
+
+app_name = 'sdns'
+
+
+
 urlpatterns = [
    path('', views.RegisterView.as_view(), name='sdns') ,
    # ====================Registros======================================
    path('register/', views.RegisterListView.as_view(), name='register_list') ,
    path("register/add/", views.RegisterEditView.as_view(), name='register_add'),
    path('register/import/', views.RegisterBulkImportView.as_view(), name='register_import'),
-   #path('register/edit/', views.RegisterBulkEditView.as_view(), name='register_bulk_edit'),
+  # path('register/edit/', views.RegisterBulkEditView.as_view(), name='register_bulk_edit'),
    path("register/delete/", views.RegisterBulkDeleteView.as_view(), name='register_bulk_delete'),
    path('register/<int:pk>/', views.RegisterView.as_view(), name='register'),
    path('register/<int:pk>/edit/', views.RegisterEditView.as_view(), name='register_edit'),
